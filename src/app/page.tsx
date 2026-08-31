@@ -1,103 +1,118 @@
-import Image from "next/image";
+import Link from "next/link";
+
+import { moonPhase, skyNow } from "@/lib/chart";
+import { PLANET_CONTENT } from "@/lib/content/planets";
+import { SIGN_GLYPH } from "@/lib/zodiac";
+
+// The sky changes; the landing page should too.
+export const revalidate = 900;
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const now = new Date();
+  const sky = skyNow(now);
+  const phase = moonPhase(now);
+  const retrogrades = sky.planets.filter((p) => p.retrograde);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  return (
+    <main className="mx-auto max-w-5xl px-6">
+      <section className="py-20 text-center sm:py-28">
+        <span className="inline-block rounded-full border border-gold/40 px-4 py-1.5 text-xs uppercase tracking-[0.16em] text-gold">
+          Live now · Your first reading is free
+        </span>
+        <h1 className="mt-7 font-display text-4xl leading-tight text-white sm:text-6xl">
+          Your stars, your numbers,
+          <br />
+          one personal reading
+        </h1>
+        <p className="mx-auto mt-6 max-w-2xl text-lg text-lilac">
+          Astranum reads your real birth chart — the actual positions of the
+          planets at the moment and place you were born — alongside your
+          numerology and Chinese zodiac, and tells you what today&rsquo;s sky is
+          doing to <em>your</em> chart specifically.
+        </p>
+        <div className="mt-9 flex flex-wrap justify-center gap-4">
+          <Link
+            href="/reading"
+            className="rounded-full bg-gold px-7 py-3 font-medium text-ink transition hover:bg-gold/90"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Get your free reading
+          </Link>
+          <Link
+            href="/sky"
+            className="rounded-full border border-lilac/40 px-7 py-3 text-paper transition hover:border-gold hover:text-gold"
           >
-            Read our docs
-          </a>
+            See today&rsquo;s sky
+          </Link>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+
+      <section className="rounded-2xl border border-lilac/15 bg-card/60 p-7">
+        <div className="flex flex-wrap items-baseline justify-between gap-3">
+          <h2 className="font-display text-xl text-white">The sky right now</h2>
+          <p className="text-sm text-lilac/80">
+            {now.toUTCString().slice(0, 22)} UTC · computed on load, never
+            hardcoded
+          </p>
+        </div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {sky.planets.map((planet) => (
+            <div
+              key={planet.name}
+              className="flex items-center gap-3 rounded-xl border border-lilac/10 bg-ink-soft/70 px-4 py-3"
+            >
+              <span className="text-xl text-gold">
+                {PLANET_CONTENT[planet.name].glyph}
+              </span>
+              <div>
+                <p className="text-sm text-white">
+                  {planet.name} in {planet.sign} {SIGN_GLYPH[planet.sign]}
+                  {planet.retrograde && (
+                    <span className="ml-2 text-xs text-gold">℞</span>
+                  )}
+                </p>
+                <p className="text-xs text-lilac/70">
+                  {planet.degreeInSign.toFixed(1)}° · {PLANET_CONTENT[planet.name].pace}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p className="mt-5 text-sm text-lilac">
+          {phase.phase}, {Math.round(phase.illumination * 100)}% illuminated.
+          {retrogrades.length > 0
+            ? ` Retrograde today: ${retrogrades.map((p) => p.name).join(", ")}.`
+            : " No planets are retrograde today."}
+        </p>
+      </section>
+
+      <section className="grid gap-5 py-20 sm:grid-cols-3">
+        {[
+          {
+            glyph: "✦",
+            title: "A real chart, not a sun sign",
+            body: "Give a birth time and place and you get your Moon, your Rising sign, all ten planets by house, and the aspects between them — calculated to arc-minute precision for your exact moment.",
+          },
+          {
+            glyph: "✳",
+            title: "Numerology with the working shown",
+            body: "Life Path, Expression, Soul Urge, Personality, and your Personal Year, Month and Day — each one explained in terms of what it's derived from, not just asserted.",
+          },
+          {
+            glyph: "☯",
+            title: "Chinese zodiac, boundary handled",
+            body: "Your animal year is resolved against the actual Chinese New Year date for your birth year, computed from the lunar cycle — no guessing if you were born in late January.",
+          },
+        ].map((card) => (
+          <div
+            key={card.title}
+            className="rounded-2xl border border-lilac/15 bg-card/40 p-6"
+          >
+            <p className="text-2xl text-gold">{card.glyph}</p>
+            <h3 className="mt-3 font-display text-lg text-white">{card.title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-lilac">{card.body}</p>
+          </div>
+        ))}
+      </section>
+    </main>
   );
 }
