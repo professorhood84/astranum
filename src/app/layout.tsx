@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
 import Link from "next/link";
+import { Analytics } from "@vercel/analytics/next";
 
 import "./globals.css";
 
@@ -51,6 +52,7 @@ export default function RootLayout({
           </p>
           <p className="mt-2">© {new Date().getFullYear()} Astranum</p>
         </footer>
+        <Analytics />
       </body>
     </html>
   );
