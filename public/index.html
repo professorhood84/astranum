@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Astranum — Personalized Numerology &amp; Astrology Readings</title>
+<meta name="description" content="Astranum blends astrology, numerology, and Chinese zodiac wisdom into one personalized daily reading — planetary transits, numerology predictions, and zodiac horoscopes, made for you.">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<style>
+  :root {
+    --ink: #1B1B3A;
+    --gold: #D4AF37;
+    --lilac: #B8A9E0;
+    --ink-soft: #2c2c54;
+    --paper: #FBFAF9;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: #EDEAF6;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .display {
+    font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  a { color: inherit; }
+
+  .stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(2px 2px at 60% 40%, rgba(212,175,55,0.6), transparent),
+      radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 90% 80%, rgba(184,169,224,0.6), transparent),
+      radial-gradient(1.5px 1.5px at 45% 85%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 15% 50%, rgba(255,255,255,0.4), transparent);
+    background-repeat: repeat;
+    background-size: 600px 600px;
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 28px 24px 0;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand img {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+
+  .brand span {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.12em;
+    color: #fff;
+    text-transform: uppercase;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: #cfc9e8;
+    margin-left: 28px;
+    font-size: 0.92rem;
+    letter-spacing: 0.03em;
+  }
+
+  nav a:hover { color: var(--gold); }
+
+  .hero {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 96px 24px 80px;
+    text-align: center;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1px solid rgba(212,175,55,0.4);
+    border-radius: 999px;
+    color: var(--gold);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    margin: 0 0 22px;
+    line-height: 1.15;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--gold), var(--lilac));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero p.lead {
+    max-width: 640px;
+    margin: 0 auto 40px;
+    color: #cfc9e8;
+    font-size: 1.15rem;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 15px 34px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.98rem;
+    letter-spacing: 0.02em;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg, var(--gold), #e8c765);
+    color: #1B1B3A;
+    box-shadow: 0 8px 24px rgba(212,175,55,0.25);
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(212,175,55,0.35); }
+
+  .btn-ghost {
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+  }
+
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  .logo-hero {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 32px;
+    border-radius: 24px;
+    object-fit: cover;
+    box-shadow: 0 0 60px rgba(184,169,224,0.35);
+  }
+
+  section {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+
+  .section-head {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 56px;
+  }
+
+  .section-head .eyebrow { margin-bottom: 16px; }
+
+  .section-head h2 {
+    font-size: clamp(1.8rem, 3.4vw, 2.4rem);
+    margin: 0 0 14px;
+  }
+
+  .section-head p {
+    color: #cfc9e8;
+    margin: 0;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+
+  .pillar {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 32px 26px;
+  }
+
+  .pillar .icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, rgba(212,175,55,0.25), rgba(184,169,224,0.25));
+  }
+
+  .pillar h3 {
+    font-size: 1.15rem;
+    margin: 0 0 10px;
+  }
+
+  .pillar p {
+    color: #cfc9e8;
+    font-size: 0.96rem;
+    margin: 0;
+  }
+
+  .how {
+    background: rgba(255,255,255,0.03);
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .step {
+    text-align: center;
+    padding: 8px;
+  }
+
+  .step .num {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    background: rgba(212,175,55,0.15);
+    color: var(--gold);
+    font-weight: 700;
+    margin: 0 auto 16px;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .step h3 {
+    font-size: 1.05rem;
+    margin: 0 0 8px;
+  }
+
+  .step p {
+    color: #cfc9e8;
+    font-size: 0.92rem;
+    margin: 0;
+  }
+
+  .status-banner {
+    text-align: center;
+    background: linear-gradient(90deg, rgba(212,175,55,0.12), rgba(184,169,224,0.12));
+    border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 18px;
+    padding: 28px 24px;
+    margin: 0 auto 0;
+  }
+
+  .status-banner p {
+    margin: 0;
+    color: #f1ecd9;
+  }
+
+  .status-banner strong { color: var(--gold); }
+
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .guide-card {
+    display: block;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 28px 24px;
+    text-decoration: none;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+
+  .guide-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--gold);
+  }
+
+  .guide-card .icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 18px;
+    background: linear-gradient(135deg, rgba(212,175,55,0.25), rgba(184,169,224,0.25));
+  }
+
+  .guide-card h3 {
+    font-size: 1.08rem;
+    margin: 0 0 8px;
+  }
+
+  .guide-card p {
+    color: #cfc9e8;
+    font-size: 0.92rem;
+    margin: 0 0 14px;
+  }
+
+  .guide-card .link-label {
+    color: var(--gold);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  footer {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 48px 24px 56px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  footer .brand {
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  footer p {
+    color: #9d97bd;
+    font-size: 0.88rem;
+    margin: 4px 0;
+  }
+
+  footer a.email {
+    color: var(--lilac);
+    text-decoration: none;
+  }
+
+  footer a.email:hover { color: var(--gold); }
+
+  @media (max-width: 820px) {
+    .pillars, .steps, .guides-grid { grid-template-columns: 1fr; }
+    nav { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <img src="assets/logo.png" alt="Astranum logo">
+      <span>Astranum</span>
+    </div>
+    <nav>
+      <a href="reading/">Get Your Reading</a>
+      <a href="#what">What It Does</a>
+      <a href="#how">How It Works</a>
+      <a href="#guides">Free Guides</a>
+      <a href="#join">Join Early Access</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <img src="assets/logo.png" alt="Astranum celestial monogram" class="logo-hero">
+    <div class="eyebrow">Live now &middot; Try your first reading free</div>
+    <h1>Your stars, your numbers,<br><em>one personal reading</em></h1>
+    <p class="lead">Astranum is a personalized guidance app blending astrology, numerology, and Chinese zodiac wisdom into a single daily reading — built around planetary transits, your numerology profile, and zodiac horoscopes, all in one place.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="reading/">Get Your Free Reading</a>
+      <a class="btn btn-ghost" href="#join">Join Early Access</a>
+      <a class="btn btn-ghost" href="#what">See What's Inside</a>
+    </div>
+  </section>
+
+  <section id="what">
+    <div class="section-head">
+      <div class="eyebrow">What Astranum Does</div>
+      <h2>Three traditions of insight, read together</h2>
+      <p>Instead of juggling separate apps for astrology, numerology, and zodiac horoscopes, Astranum weaves all three into one personalized reading — evenly, with no single tradition overshadowing the others.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="icon">✦</div>
+        <h3>Planetary Transits</h3>
+        <p>Astrology readings grounded in real planetary movement, translated into guidance for your day, week, and bigger life moments.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon">✳</div>
+        <h3>Numerology Predictions</h3>
+        <p>Your life path, personal year, and core numbers, decoded into practical predictions you can actually use.</p>
+      </div>
+      <div class="pillar">
+        <div class="icon">☯</div>
+        <h3>Chinese Zodiac Horoscopes</h3>
+        <p>Your zodiac animal and element brought into the mix, adding a third lens of cyclical, time-tested wisdom.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="how">
+    <div class="section-head">
+      <div class="eyebrow">How It Works</div>
+      <h2>Personalized in minutes</h2>
+      <p>Astranum is built to feel effortless — enter a few details once, and receive a reading made for you.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Share Your Birth Details</h3>
+        <p>Birth date, time, and place — the foundation for your astrology and numerology profile.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Astranum Reads the Sky &amp; Numbers</h3>
+        <p>We combine current planetary transits, your numerology chart, and your Chinese zodiac sign into one synthesis.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Get Your Personal Reading</h3>
+        <p>A single, clear reading — not three disconnected reports — delivered in language you can act on.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="guides">
+    <div class="section-head">
+      <div class="eyebrow">Free Guides</div>
+      <h2>Not ready for a full reading yet? Start here</h2>
+      <p>Three free, in-depth guides covering the traditions Astranum blends together — no sign-up required.</p>
+    </div>
+    <div class="guides-grid">
+      <a class="guide-card" href="chinese-zodiac/">
+        <div class="icon">☯</div>
+        <h3>Chinese Zodiac Guide</h3>
+        <p>All 12 animal signs — traits, elements, and trine/clash relationships.</p>
+        <span class="link-label">Read the guide →</span>
+      </a>
+      <a class="guide-card" href="life-path-numbers/">
+        <div class="icon">✳</div>
+        <h3>Life Path Number Meanings</h3>
+        <p>Numbers 1–9 plus master numbers 11, 22, and 33, fully explained.</p>
+        <span class="link-label">Read the guide →</span>
+      </a>
+      <a class="guide-card" href="sun-signs/">
+        <div class="icon">✦</div>
+        <h3>Sun Sign Guide</h3>
+        <p>Dates, elements, and personality traits for all 12 zodiac signs.</p>
+        <span class="link-label">Read the guide →</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="join">
+    <div class="status-banner">
+      <p><strong>Your free reading is ready right now.</strong> The core Astranum reading — numerology, astrology, and Chinese zodiac in one — is live today. Join early access below to be first for new features as we keep building.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="brand">
+      <img src="assets/logo.png" alt="Astranum logo" style="width:32px;height:32px;">
+      <span>Astranum</span>
+    </div>
+    <p>Personalized numerology &amp; astrology readings — planetary transits, numerology, and Chinese zodiac, together.</p>
+    <p style="margin:14px 0;">
+      <a href="chinese-zodiac/" style="color:#cfc9e8; text-decoration:none; margin:0 10px; font-size:0.85rem;">Chinese Zodiac</a>
+      <a href="life-path-numbers/" style="color:#cfc9e8; text-decoration:none; margin:0 10px; font-size:0.85rem;">Life Path Numbers</a>
+      <a href="sun-signs/" style="color:#cfc9e8; text-decoration:none; margin:0 10px; font-size:0.85rem;">Sun Signs</a>
+    </p>
+    <p><a class="email" href="mailto:astranum@me.pazi.ai">astranum@me.pazi.ai</a></p>
+    <p>&copy; 2026 Astranum. All rights reserved.</p>
+  </footer>
+
+</div>
+</body>
+</html>
