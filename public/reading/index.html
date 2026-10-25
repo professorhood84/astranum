@@ -1,0 +1,2241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Personalized Reading — Astranum</title>
+<meta name="description" content="Enter your birth details and get your personalized Astranum reading — meaning-rich Pythagorean and Chaldean numerology, a personal year forecast, today's planetary transits, a full Chinese zodiac horoscope, and a compatibility reading with someone else, woven into one in-depth story.">
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<style>
+  :root {
+    --ink: #1B1B3A;
+    --gold: #D4AF37;
+    --lilac: #B8A9E0;
+    --ink-soft: #2c2c54;
+    --paper: #FBFAF9;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: #EDEAF6;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, .display {
+    font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  a { color: inherit; }
+
+  .stars {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(2px 2px at 60% 40%, rgba(212,175,55,0.6), transparent),
+      radial-gradient(1px 1px at 30% 70%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 90% 80%, rgba(184,169,224,0.6), transparent),
+      radial-gradient(1.5px 1.5px at 45% 85%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 15% 50%, rgba(255,255,255,0.4), transparent);
+    background-repeat: repeat;
+    background-size: 600px 600px;
+    opacity: 0.9;
+    pointer-events: none;
+  }
+
+  .wrap { position: relative; z-index: 1; }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 28px 24px 0;
+  }
+
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+
+  .brand img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; }
+
+  .brand span {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.12em;
+    color: #fff;
+    text-transform: uppercase;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: #cfc9e8;
+    font-size: 0.92rem;
+    letter-spacing: 0.03em;
+  }
+
+  nav a:hover { color: var(--gold); }
+
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 56px 24px 90px;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1px solid rgba(212,175,55,0.4);
+    border-radius: 999px;
+    color: var(--gold);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+
+  .intro h1 {
+    font-size: clamp(1.9rem, 4.2vw, 2.6rem);
+    margin: 0 0 14px;
+    line-height: 1.2;
+  }
+
+  .intro p {
+    color: #cfc9e8;
+    max-width: 560px;
+    margin: 0 0 40px;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 36px 32px;
+  }
+
+  .field { margin-bottom: 22px; }
+
+  .field label {
+    display: block;
+    font-size: 0.88rem;
+    letter-spacing: 0.03em;
+    color: #cfc9e8;
+    margin-bottom: 8px;
+  }
+
+  .field .hint {
+    display: block;
+    font-size: 0.78rem;
+    color: #9d97bd;
+    margin-top: 6px;
+  }
+
+  .field input, .field select {
+    width: 100%;
+    padding: 13px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(0,0,0,0.2);
+    color: #fff;
+    font-size: 0.98rem;
+    font-family: inherit;
+  }
+
+  .field input::placeholder { color: #7a749a; }
+
+  .field input:focus, .field select:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212,175,55,0.15);
+  }
+
+  .row-two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .zodiac-note {
+    background: rgba(184,169,224,0.08);
+    border: 1px solid rgba(184,169,224,0.25);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 0.85rem;
+    color: #d8d2ee;
+    margin-bottom: 22px;
+    display: none;
+  }
+
+  .zodiac-note.visible { display: block; }
+
+  .btn {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    padding: 16px 34px;
+    border: none;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    font-family: inherit;
+  }
+
+  .btn-primary {
+    background: linear-gradient(90deg, var(--gold), #e8c765);
+    color: #1B1B3A;
+    box-shadow: 0 8px 24px rgba(212,175,55,0.25);
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(212,175,55,0.35); }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: #fff;
+    width: auto;
+    padding: 12px 26px;
+    font-size: 0.92rem;
+  }
+
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  .error-msg {
+    color: #f3a6a6;
+    font-size: 0.85rem;
+    margin: -8px 0 20px;
+    display: none;
+  }
+
+  .error-msg.visible { display: block; }
+
+  #result { display: none; }
+
+  #result.visible { display: block; }
+
+  #compat-result { display: none; }
+
+  #compat-result.visible { display: block; }
+
+  #form-section.hidden { display: none; }
+
+  .result-head {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .result-head .eyebrow { margin-bottom: 18px; }
+
+  .result-head h2 {
+    font-size: clamp(1.6rem, 3.6vw, 2.1rem);
+    margin: 0 0 10px;
+  }
+
+  .chips {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .chip {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 18px 12px;
+    text-align: center;
+  }
+
+  .chip .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9d97bd;
+    margin-bottom: 8px;
+  }
+
+  .chip .value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .reading-card {
+    background: linear-gradient(160deg, rgba(212,175,55,0.08), rgba(184,169,224,0.08));
+    border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 20px;
+    padding: 34px 30px;
+    margin-bottom: 28px;
+  }
+
+  .reading-card p {
+    font-size: 1.08rem;
+    color: #f1ecd9;
+    margin: 0;
+  }
+
+  .section-title {
+    font-size: 1.08rem;
+    margin: 44px 0 6px;
+    padding-top: 4px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 24px;
+  }
+
+  .section-title:first-of-type { margin-top: 4px; }
+
+  .section-sub {
+    font-size: 0.82rem;
+    color: #9d97bd;
+    margin: 0 0 20px;
+  }
+
+  .interp-card {
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin-bottom: 16px;
+  }
+
+  .interp-card h4 {
+    margin: 0 0 10px;
+    font-size: 1rem;
+    color: var(--gold);
+  }
+
+  .interp-card p {
+    margin: 0;
+    color: #ddd7ef;
+    font-size: 0.96rem;
+  }
+
+  .transit-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .transit-row {
+    background: rgba(184,169,224,0.07);
+    border: 1px solid rgba(184,169,224,0.22);
+    border-radius: 14px;
+    padding: 16px 20px;
+  }
+
+  .transit-row-head {
+    font-family: 'Space Grotesk', sans-serif;
+    color: #fff;
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+    margin-bottom: 6px;
+  }
+
+  .transit-row-body {
+    margin: 0;
+    color: #cfc9e8;
+    font-size: 0.9rem;
+  }
+
+  .transit-personal h4 { color: var(--lilac); }
+
+  .chaldean-wrap {
+    background: rgba(184,169,224,0.05);
+    border: 1px solid rgba(184,169,224,0.28);
+    border-radius: 20px;
+    padding: 30px 26px 6px;
+    margin: 44px 0 16px;
+  }
+
+  .chaldean-eyebrow {
+    display: inline-block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--lilac);
+    background: rgba(184,169,224,0.14);
+    border: 1px solid rgba(184,169,224,0.35);
+    border-radius: 999px;
+    padding: 5px 12px;
+    margin-bottom: 16px;
+  }
+
+  .chaldean-wrap .section-title {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    color: var(--lilac);
+  }
+
+  .chaldean-wrap .interp-card {
+    background: rgba(255,255,255,0.02);
+    border-color: rgba(184,169,224,0.22);
+  }
+
+  .chaldean-wrap .interp-card h4 { color: var(--lilac); }
+
+  .chip-chaldean .value { color: var(--lilac); }
+
+  .forecast-subhead {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #9d97bd;
+    margin: 22px 0 12px;
+  }
+
+  .forecast-subhead:first-of-type { margin-top: 0; }
+
+  .forecast-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .forecast-year {
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 18px 22px;
+  }
+
+  .forecast-year-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .forecast-year-head .fy-year {
+    font-family: 'Space Grotesk', sans-serif;
+    color: #fff;
+    font-size: 1rem;
+    letter-spacing: 0.03em;
+  }
+
+  .forecast-year-head .fy-tag {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+  }
+
+  .forecast-year p {
+    margin: 4px 0;
+    color: #ddd7ef;
+    font-size: 0.88rem;
+  }
+
+  .forecast-locked-card {
+    background: linear-gradient(160deg, rgba(212,175,55,0.06), rgba(184,169,224,0.06));
+    border: 1px dashed rgba(212,175,55,0.4);
+  }
+
+  .forecast-locked-years {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .fy-locked-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.82rem;
+    color: var(--gold);
+    background: rgba(212,175,55,0.1);
+    border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 999px;
+    padding: 5px 12px;
+  }
+
+  .fy-locked-badge::before {
+    content: "\1F512";
+    font-size: 0.72rem;
+  }
+
+  .forecast-locked-card p {
+    margin: 0 0 16px;
+    color: #ddd7ef;
+    font-size: 0.94rem;
+  }
+
+  .forecast-locked-card .btn {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .reading-meta {
+    font-size: 0.82rem;
+    color: #9d97bd;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .result-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .share-card-block {
+    margin-bottom: 28px;
+  }
+
+  .share-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: #d8d2ee;
+    margin-bottom: 16px;
+    cursor: pointer;
+  }
+
+  .share-toggle input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--gold);
+    cursor: pointer;
+  }
+
+  .share-preview {
+    display: block;
+    max-width: 320px;
+    width: 100%;
+    margin: 20px auto 0;
+    border-radius: 16px;
+    border: 1px solid rgba(212,175,55,0.3);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+  }
+
+  .share-hint {
+    text-align: center;
+    font-size: 0.78rem;
+    color: #9d97bd;
+    margin: 10px 0 0;
+  }
+
+  .phase-note {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #9d97bd;
+    margin-top: 36px;
+  }
+
+  footer {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 30px 24px 50px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  footer p { color: #9d97bd; font-size: 0.85rem; margin: 4px 0; }
+
+  @media (max-width: 640px) {
+    .row-two { grid-template-columns: 1fr 1fr; }
+    .card { padding: 28px 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrap">
+
+  <header>
+    <a class="brand" href="../">
+      <img src="../assets/logo.png" alt="Astranum logo">
+      <span>Astranum</span>
+    </a>
+    <nav><a href="../">Back to Astranum</a></nav>
+  </header>
+
+  <main>
+    <section id="form-section">
+      <div class="intro">
+        <div class="eyebrow">Your Personal Reading</div>
+        <h1>Tell us when and where you began</h1>
+        <p>A few details unlock your numerology profile, your personal year forecast, your sun sign, a full Chinese zodiac horoscope, and today's planetary transits — woven into one in-depth, personalized reading, right here.</p>
+      </div>
+
+      <form class="card" id="reading-form" novalidate>
+        <div class="field">
+          <label for="full-name">Full name</label>
+          <input type="text" id="full-name" name="full-name" placeholder="e.g. Maya Rivera" autocomplete="name" required>
+          <span class="hint">Use your full birth name if you know it — it powers your Expression Number.</span>
+        </div>
+
+        <div class="row-two">
+          <div class="field">
+            <label for="birth-date">Birth date</label>
+            <input type="date" id="birth-date" name="birth-date" required>
+          </div>
+          <div class="field">
+            <label for="birth-time">Birth time <span style="color:#7a749a;">(optional)</span></label>
+            <input type="time" id="birth-time" name="birth-time">
+            <span class="hint">Unlocks Moon sign readings in a future update.</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="birth-city">Birth city</label>
+          <input type="text" id="birth-city" name="birth-city" placeholder="e.g. Austin, USA" required>
+        </div>
+
+        <div class="field">
+          <label for="zodiac-year">Confirm your Chinese zodiac year</label>
+          <input type="number" id="zodiac-year" name="zodiac-year" min="1900" max="2026" required>
+          <span class="hint">We prefill this from your birth date. The Chinese New Year lands between late January and mid-February each year, so if you were born in that window, double-check your animal year and adjust it here if needed.</span>
+        </div>
+        <div class="zodiac-note" id="zodiac-note"></div>
+
+        <div class="error-msg" id="form-error">Please fill in your full name, birth date, and birth city to continue.</div>
+
+        <button type="submit" class="btn btn-primary">Reveal My Reading</button>
+      </form>
+    </section>
+
+    <section id="result">
+      <div class="result-head">
+        <div class="eyebrow">Your Reading</div>
+        <h2 id="result-heading">Your Personal Reading</h2>
+      </div>
+
+      <div class="chips">
+        <div class="chip">
+          <div class="label">Life Path</div>
+          <div class="value" id="chip-lifepath">—</div>
+        </div>
+        <div class="chip">
+          <div class="label">Expression</div>
+          <div class="value" id="chip-expression">—</div>
+        </div>
+        <div class="chip">
+          <div class="label">Sun Sign</div>
+          <div class="value" id="chip-sunsign">—</div>
+        </div>
+        <div class="chip">
+          <div class="label">Chinese Zodiac</div>
+          <div class="value" id="chip-zodiac">—</div>
+        </div>
+        <div class="chip">
+          <div class="label">Personal Year</div>
+          <div class="value" id="chip-personalyear">—</div>
+        </div>
+        <div class="chip chip-chaldean">
+          <div class="label">Chaldean Psychic</div>
+          <div class="value" id="chip-chaldean-psychic">—</div>
+        </div>
+        <div class="chip chip-chaldean">
+          <div class="label">Chaldean Destiny</div>
+          <div class="value" id="chip-chaldean-destiny">—</div>
+        </div>
+      </div>
+
+      <div class="reading-card">
+        <p id="reading-text"></p>
+      </div>
+
+      <h3 class="section-title">Your Numbers, Explained</h3>
+      <p class="section-sub">What each number means, and why it shows up the way it does.</p>
+      <div class="interp-card">
+        <h4 id="interp-lifepath-title"></h4>
+        <p id="interp-lifepath-body"></p>
+      </div>
+      <div class="interp-card">
+        <h4 id="interp-expression-title"></h4>
+        <p id="interp-expression-body"></p>
+      </div>
+      <div class="interp-card">
+        <h4 id="interp-personalyear-title"></h4>
+        <p id="interp-personalyear-body"></p>
+      </div>
+
+      <h3 class="section-title">Your 10-Year Numerology Forecast</h3>
+      <p class="section-sub">Your Personal Year Number extended across a 10-year arc. The 5 years behind you are free to read in full, as a mirror on what you've already lived; the current year and the 4 years ahead unlock as a one-time upgrade.</p>
+
+      <h4 class="forecast-subhead">Your Last 5 Years — Free</h4>
+      <div class="forecast-list" id="forecast-list-past"></div>
+
+      <h4 class="forecast-subhead">Your Next 5 Years — Premium</h4>
+      <div class="interp-card forecast-locked-card">
+        <div class="forecast-locked-years" id="forecast-locked-years"></div>
+        <p>Your current year and the 4 years ahead are written in the same theme, opportunities, and cautions format as the years above — just in a forward-looking voice. Unlock once, keep the read.</p>
+        <a class="btn btn-primary" id="forecast-checkout-link" href="#" target="_blank" rel="noopener">Unlock Your Next 5 Years — $1.99</a>
+      </div>
+
+      <div class="chaldean-wrap">
+        <span class="chaldean-eyebrow">A Separate Numerology System</span>
+        <h3 class="section-title">Your Chaldean Chart</h3>
+        <p class="section-sub">Chaldean numerology is an older, sound-based tradition — not another pass through the Pythagorean numbers above. It uses its own letter-to-number chart (built around vibration, not alphabet order), skips the number 9 in its letter values entirely, and reads the name you currently go by rather than your birth name. Treat everything below as a second, independent lens on you.</p>
+        <div class="interp-card">
+          <h4 id="interp-chaldean-psychic-title"></h4>
+          <p id="interp-chaldean-psychic-body"></p>
+        </div>
+        <div class="interp-card">
+          <h4 id="interp-chaldean-destiny-title"></h4>
+          <p id="interp-chaldean-destiny-body"></p>
+        </div>
+        <div class="interp-card">
+          <h4 id="interp-chaldean-name-title"></h4>
+          <p id="interp-chaldean-name-body"></p>
+        </div>
+        <div class="interp-card">
+          <h4>How Your Chaldean Numbers Interact</h4>
+          <p id="interp-chaldean-interplay-body"></p>
+        </div>
+      </div>
+
+      <h3 class="section-title">Your Stars, Explained</h3>
+      <p class="section-sub">The reasoning behind your sun sign's core nature.</p>
+      <div class="interp-card">
+        <h4 id="interp-sunsign-title"></h4>
+        <p id="interp-sunsign-body"></p>
+      </div>
+
+      <h3 class="section-title">Your Chinese Zodiac Horoscope</h3>
+      <p class="section-sub">Where your animal sign's traits come from, your personality profile, your element, and how this year treats your sign.</p>
+      <div class="interp-card">
+        <h4 id="interp-animal-title"></h4>
+        <p id="interp-animal-body"></p>
+      </div>
+      <div class="interp-card">
+        <h4 id="interp-personality-title"></h4>
+        <p id="interp-personality-body"></p>
+      </div>
+      <div class="interp-card">
+        <h4 id="interp-element-title"></h4>
+        <p id="interp-element-body"></p>
+      </div>
+      <div class="interp-card">
+        <h4 id="interp-yearoutlook-title"></h4>
+        <p id="interp-yearoutlook-body"></p>
+      </div>
+
+      <h3 class="section-title">The Sky Right Now</h3>
+      <p class="section-sub" id="transit-date"></p>
+      <div class="transit-grid" id="transit-grid"></div>
+      <div class="interp-card transit-personal">
+        <h4 id="transit-personal-title"></h4>
+        <p id="transit-personal-body"></p>
+      </div>
+
+      <h3 class="section-title">Compatibility Reading</h3>
+      <p class="section-sub">See how you and someone else line up across numerology, astrology, and Chinese zodiac — blended into one match story, not three separate verdicts.</p>
+      <div class="interp-card" id="compat-form-card">
+        <div class="field">
+          <label for="compat-name">Their full name</label>
+          <input type="text" id="compat-name" placeholder="e.g. Alex Rivera">
+        </div>
+        <div class="row-two">
+          <div class="field">
+            <label for="compat-birthdate">Their birth date</label>
+            <input type="date" id="compat-birthdate">
+          </div>
+          <div class="field">
+            <label for="compat-zodiac-year">Their Chinese zodiac year</label>
+            <input type="number" id="compat-zodiac-year" min="1900" max="2026">
+            <span class="hint">Prefilled from their birth date — adjust it if they were born near the Chinese New Year boundary (late Jan–mid Feb).</span>
+          </div>
+        </div>
+        <div class="error-msg" id="compat-error">Please fill in their name and birth date to see your compatibility.</div>
+        <button type="button" class="btn btn-primary" id="compat-submit">Reveal Compatibility</button>
+      </div>
+
+      <div id="compat-result">
+        <div class="chips" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));">
+          <div class="chip">
+            <div class="label">Compatibility Score</div>
+            <div class="value" id="compat-score">—</div>
+          </div>
+          <div class="chip">
+            <div class="label">Tier</div>
+            <div class="value" id="compat-tier">—</div>
+          </div>
+        </div>
+        <div class="reading-card">
+          <p id="compat-narrative"></p>
+        </div>
+
+        <div class="share-card-block">
+          <label class="share-toggle" for="compat-share-initials">
+            <input type="checkbox" id="compat-share-initials">
+            <span>Use initials instead of full names (privacy)</span>
+          </label>
+          <div class="result-actions">
+            <button class="btn btn-primary" id="compat-share-download" type="button">Download Share Image</button>
+          </div>
+          <p class="share-hint">A branded image card summarizing this reading, ready to post.</p>
+          <img id="compat-share-preview" class="share-preview" alt="Preview of the Astranum compatibility share card" style="display:none;">
+        </div>
+      </div>
+
+      <canvas id="compat-share-canvas" width="1080" height="1080" style="display:none;" aria-hidden="true"></canvas>
+
+      <div class="reading-meta" id="reading-meta"></div>
+
+      <div class="result-actions">
+        <button class="btn btn-ghost" id="start-over">Start Over</button>
+      </div>
+
+      <p class="phase-note">This reading blends your Pythagorean numerology (including your personal year forecast), a distinct Chaldean numerology chart, your sun sign, a full Chinese zodiac horoscope, today's planetary transits, and a compatibility reading with someone else — with real meaning behind every number, not just the number itself. Natal Moon sign and live ephemeris aspect calculations are coming in a future update.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Astranum — personalized numerology &amp; astrology readings.</p>
+    <p><a href="mailto:astranum@me.pazi.ai" style="color:var(--lilac); text-decoration:none;">astranum@me.pazi.ai</a></p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Calculation logic (per Astranum reading-engine spec) ----------
+
+  var LETTER_VALUES = {
+    a:1, j:1, s:1,
+    b:2, k:2, t:2,
+    c:3, l:3, u:3,
+    d:4, m:4, v:4,
+    e:5, n:5, w:5,
+    f:6, o:6, x:6,
+    g:7, p:7, y:7,
+    h:8, q:8, z:8,
+    i:9, r:9
+  };
+
+  function sumDigits(numStr) {
+    var sum = 0;
+    for (var i = 0; i < numStr.length; i++) {
+      var d = numStr.charCodeAt(i) - 48;
+      if (d >= 0 && d <= 9) sum += d;
+    }
+    return sum;
+  }
+
+  // Reduce to a single digit, preserving master numbers 11, 22, 33 at every step.
+  function reduceNumber(n) {
+    while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
+      n = sumDigits(String(n));
+    }
+    return n;
+  }
+
+  function lifePathNumber(dateStr) {
+    var digitsOnly = dateStr.replace(/-/g, "");
+    return reduceNumber(sumDigits(digitsOnly));
+  }
+
+  // Personal Year Number reduces fully to 1-9 (master numbers are not preserved
+  // for Personal Year by convention, per the reading-engine spec). Recomputed
+  // from birth month + birth day + the current calendar year, so it updates
+  // automatically each year without a content change.
+  function reduceFully(n) {
+    while (n > 9) {
+      n = sumDigits(String(n));
+    }
+    return n;
+  }
+
+  function personalYearNumber(dateStr, currentYear) {
+    var parts = dateStr.split("-").map(Number);
+    var m = parts[1], d = parts[2];
+    var total = sumDigits(String(m)) + sumDigits(String(d)) + sumDigits(String(currentYear));
+    return reduceFully(total);
+  }
+
+  function expressionNumber(fullName) {
+    var letters = fullName.toLowerCase().replace(/[^a-z]/g, "");
+    var sum = 0;
+    for (var i = 0; i < letters.length; i++) {
+      sum += LETTER_VALUES[letters[i]] || 0;
+    }
+    return reduceNumber(sum);
+  }
+
+  // ---------- Chaldean numerology (per reading-engine spec section 7) ----------
+  // A distinct, older tradition from the Pythagorean system above: sound-based
+  // letter values, no letter maps to 9, and a different master-number rule
+  // (11 and 22 are preserved, 33 is not).
+
+  var CHALDEAN_LETTER_VALUES = {
+    a: 1, i: 1, j: 1, q: 1, y: 1,
+    b: 2, k: 2, r: 2,
+    c: 3, g: 3, l: 3, s: 3,
+    d: 4, m: 4, t: 4,
+    e: 5, h: 5, n: 5, x: 5,
+    u: 6, v: 6, w: 6,
+    o: 7, z: 7,
+    f: 8, p: 8
+  };
+
+  // Reduce toward a single digit, preserving 11 and 22 only (not 33) — the
+  // Chaldean master-number convention, distinct from the Pythagorean rule
+  // used by reduceNumber() above.
+  function chaldeanReduce(n) {
+    while (n > 9 && n !== 11 && n !== 22) {
+      n = sumDigits(String(n));
+    }
+    return n;
+  }
+
+  // Chaldean Psychic Number (Mulank) — the birth day only, always a plain
+  // single digit 1-9 (no master numbers preserved here).
+  function chaldeanPsychicNumber(dateStr) {
+    var parts = dateStr.split("-").map(Number);
+    var day = parts[2];
+    return reduceFully(sumDigits(String(day)));
+  }
+
+  // Chaldean Destiny Number (Bhagyank) — the same raw digit-sum arithmetic as
+  // the Pythagorean Life Path, but reduced with the Chaldean master-number rule.
+  function chaldeanDestinyNumber(dateStr) {
+    var digitsOnly = dateStr.replace(/-/g, "");
+    return chaldeanReduce(sumDigits(digitsOnly));
+  }
+
+  // Chaldean Name Number — uses the Chaldean letter chart (distinct values
+  // from the Pythagorean chart) and keeps the intermediate compound number
+  // (e.g. 32, 41) alongside the final single-digit reduction.
+  function chaldeanNameNumber(name) {
+    var letters = name.toLowerCase().replace(/[^a-z]/g, "");
+    var sum = 0;
+    for (var i = 0; i < letters.length; i++) {
+      sum += CHALDEAN_LETTER_VALUES[letters[i]] || 0;
+    }
+    var compound = sum;
+    while (compound > 99) {
+      compound = sumDigits(String(compound));
+    }
+    return { compound: compound, reduced: reduceFully(compound) };
+  }
+
+  function sunSign(dateStr) {
+    var parts = dateStr.split("-").map(Number);
+    var m = parts[1], d = parts[2];
+    var md = m * 100 + d;
+    if (md >= 321 && md <= 419) return "Aries";
+    if (md >= 420 && md <= 520) return "Taurus";
+    if (md >= 521 && md <= 620) return "Gemini";
+    if (md >= 621 && md <= 722) return "Cancer";
+    if (md >= 723 && md <= 822) return "Leo";
+    if (md >= 823 && md <= 922) return "Virgo";
+    if (md >= 923 && md <= 1022) return "Libra";
+    if (md >= 1023 && md <= 1121) return "Scorpio";
+    if (md >= 1122 && md <= 1221) return "Sagittarius";
+    if (md >= 1222 || md <= 119) return "Capricorn";
+    if (md >= 120 && md <= 218) return "Aquarius";
+    return "Pisces";
+  }
+
+  var ANIMALS = ["Rat","Ox","Tiger","Rabbit","Dragon","Snake","Horse","Goat","Monkey","Rooster","Dog","Pig"];
+
+  function chineseAnimal(year) {
+    var idx = ((year - 4) % 12 + 12) % 12;
+    return ANIMALS[idx];
+  }
+
+  var ELEMENT_BY_LAST_DIGIT = { 4:"Wood", 5:"Wood", 6:"Fire", 7:"Fire", 8:"Earth", 9:"Earth", 0:"Metal", 1:"Metal", 2:"Water", 3:"Water" };
+
+  function chineseElement(year) {
+    var lastDigit = Math.abs(year % 10);
+    return ELEMENT_BY_LAST_DIGIT[lastDigit];
+  }
+
+  function isNearChineseNewYearWindow(dateStr) {
+    var parts = dateStr.split("-").map(Number);
+    var m = parts[1], d = parts[2];
+    return m === 1 || (m === 2 && d <= 20);
+  }
+
+  // Traditional San He (trine / affinity) groups and Liu Chong (clash) pairs,
+  // used to work out how a user's animal sign relates to the current year's
+  // animal for the "this year's outlook" horoscope section.
+  var TRINE_GROUPS = [
+    ["Rat", "Dragon", "Monkey"],
+    ["Ox", "Snake", "Rooster"],
+    ["Tiger", "Horse", "Dog"],
+    ["Rabbit", "Goat", "Pig"]
+  ];
+
+  var CLASH_PAIRS = [
+    ["Rat", "Horse"], ["Ox", "Goat"], ["Tiger", "Monkey"],
+    ["Rabbit", "Rooster"], ["Dragon", "Dog"], ["Snake", "Pig"]
+  ];
+
+  function findTrineGroup(animal) {
+    for (var i = 0; i < TRINE_GROUPS.length; i++) {
+      if (TRINE_GROUPS[i].indexOf(animal) !== -1) return TRINE_GROUPS[i];
+    }
+    return null;
+  }
+
+  function isClash(a, b) {
+    for (var i = 0; i < CLASH_PAIRS.length; i++) {
+      var p = CLASH_PAIRS[i];
+      if ((p[0] === a && p[1] === b) || (p[0] === b && p[1] === a)) return true;
+    }
+    return false;
+  }
+
+  function getYearRelationship(userAnimal, yearAnimal) {
+    if (userAnimal === yearAnimal) return "own";
+    var group = findTrineGroup(userAnimal);
+    if (group && group.indexOf(yearAnimal) !== -1) return "harmony";
+    if (isClash(userAnimal, yearAnimal)) return "clash";
+    return "neutral";
+  }
+
+  // Liu He (paired harmony) — six secondary harmony pairs, used by the
+  // Compatibility Reading (section 6 of the reading-engine spec).
+  var LIUHE_PAIRS = [
+    ["Rat", "Ox"], ["Tiger", "Pig"], ["Rabbit", "Dog"],
+    ["Dragon", "Rooster"], ["Snake", "Monkey"], ["Horse", "Goat"]
+  ];
+
+  function isLiuHe(a, b) {
+    for (var i = 0; i < LIUHE_PAIRS.length; i++) {
+      var p = LIUHE_PAIRS[i];
+      if ((p[0] === a && p[1] === b) || (p[0] === b && p[1] === a)) return true;
+    }
+    return false;
+  }
+
+  // ---------- Content bank (per-system snippets, blended evenly) ----------
+
+  var LIFE_PATH_TRAITS = {
+    1: "an independent trailblazer, wired to lead and start what others hesitate to begin",
+    2: "a natural diplomat, tuned to harmony, partnership, and the details others miss",
+    3: "a spark of creative self-expression, communication, and joy",
+    4: "a builder, turning steady and patient effort into something that lasts",
+    5: "a restless seeker of freedom, change, and new experience",
+    6: "a caretaker at heart, drawn to responsibility, home, and healing others",
+    7: "a quiet analyst, pulled toward truth, introspection, and inner wisdom",
+    8: "a driven achiever, wired for ambition, authority, and material mastery",
+    9: "a compassionate humanitarian, called to give generously and let go gracefully",
+    11: "an intuitive visionary, carrying heightened sensitivity and spiritual insight",
+    22: "a master builder, capable of turning big dreams into lasting structures",
+    33: "a master teacher, guided by selfless love and service"
+  };
+
+  var EXPRESSION_TRAITS = {
+    1: "leading boldly and initiating your own path",
+    2: "collaborating, mediating, and creating harmony",
+    3: "creative communication — through words, art, or performance",
+    4: "organizing, planning, and building durable systems",
+    5: "adapting quickly and thriving amid variety and change",
+    6: "nurturing, teaching, and looking after the people around you",
+    7: "research, analysis, and deep, focused thinking",
+    8: "managing resources and commanding respect through leadership",
+    9: "giving generously and inspiring through compassion",
+    11: "illuminating others through intuition and inspired ideas",
+    22: "turning visionary ideas into practical, lasting achievements",
+    33: "uplifting others through healing, teaching, and selfless guidance"
+  };
+
+  var SUN_SIGN_TRAITS = {
+    Aries: "bold, direct, and quick to act on instinct",
+    Taurus: "grounded, patient, and drawn to comfort and consistency",
+    Gemini: "curious, quick-witted, and endlessly communicative",
+    Cancer: "intuitive, protective, and deeply tied to home and feeling",
+    Leo: "warm, expressive, and built to shine in front of others",
+    Virgo: "precise, thoughtful, and quietly devoted to getting things right",
+    Libra: "diplomatic, aesthetic, and happiest in balanced partnership",
+    Scorpio: "intense, perceptive, and unafraid of life's depths",
+    Sagittarius: "adventurous, optimistic, and hungry for bigger horizons",
+    Capricorn: "disciplined, ambitious, and built for the long climb",
+    Aquarius: "independent, inventive, and drawn to progress and ideas",
+    Pisces: "dreamy, empathetic, and fluent in imagination and feeling"
+  };
+
+  var ANIMAL_TRAITS = {
+    Rat: "resourceful and quick-thinking, always finding the clever angle",
+    Ox: "steady and dependable, willing to put in the quiet work others avoid",
+    Tiger: "bold and confident, unafraid to take the first step",
+    Rabbit: "gentle and perceptive, gifted at reading a room",
+    Dragon: "ambitious and magnetic, built for momentum",
+    Snake: "wise and intuitive, quietly strategic",
+    Horse: "energetic and independent, always moving toward the horizon",
+    Goat: "creative and sensitive, drawn to beauty and harmony",
+    Monkey: "clever and curious, quick to find an inventive solution",
+    Rooster: "sharp and observant, confident in your own judgment",
+    Dog: "loyal and honest, protective of the people you love",
+    Pig: "generous and warm-hearted, content in life's simple pleasures"
+  };
+
+  var ELEMENT_FLAVOR = {
+    Wood: "growth and steady expansion",
+    Fire: "passion and bold momentum",
+    Earth: "stability and practical grounding",
+    Metal: "discipline and sharp focus",
+    Water: "intuition and emotional depth"
+  };
+
+  function buildReading(data) {
+    var firstName = data.fullName.trim().split(/\s+/)[0] || "friend";
+    var lp = data.lifePath;
+    var exp = data.expression;
+    var sun = data.sunSign;
+    var animal = data.animal;
+    var element = data.element;
+
+    return firstName + ", your numbers and the sky agree on one thing: you are " +
+      LIFE_PATH_TRAITS[lp] + " (Life Path " + lp + "). Your Expression Number " + exp +
+      " points to a gift for " + EXPRESSION_TRAITS[exp] + ". Born under " + sun +
+      ", you carry a nature that is " + SUN_SIGN_TRAITS[sun] + ". And as a " + element + " " + animal +
+      ", your instincts lean toward being " + ANIMAL_TRAITS[animal] + ", with " + ELEMENT_FLAVOR[element] +
+      " running underneath everything you do. The sections below unpack what each of these numbers and placements actually means, and why — plus what's happening in the sky for you today.";
+  }
+
+  // ---------- Deep interpretation content bank (meaning + why, per reading-engine spec) ----------
+
+  var LIFE_PATH_MEANING = {
+    1: { title: "Life Path 1 — The Trailblazer", body: "Your birth date reduces to a 1, the number of new beginnings. In numerology, 1 sits at the start of the sequence, symbolizing the spark that starts something out of nothing — which is why people with this Life Path are wired to initiate rather than follow. You likely feel most alive when you're the one setting direction, even if that means walking into unfamiliar territory alone. The lesson underneath this number is learning that leadership isn't about being right first — it's about being willing to go first." },
+    2: { title: "Life Path 2 — The Diplomat", body: "Reducing to a 2 places you right after the number of origin, and 2 is the first number that requires another number to exist — it's inherently relational. That's the root of why Life Path 2s are natural mediators: your core number literally represents \"the pair,\" so you're tuned to notice imbalance, tension, and what two sides need to meet in the middle. This shows up as sensitivity to others' feelings and a gift for quiet diplomacy that louder personalities often miss. The growth edge is trusting that being the peacemaker is a genuine strength, not a lesser role than leading from the front." },
+    3: { title: "Life Path 3 — The Creative Communicator", body: "3 is the number where two separate things (1 and 2) combine into a new expression — geometrically, three points create the first shape. That's why Life Path 3 carries a gift for creative synthesis: turning raw feeling or idea into something communicable, whether that's words, art, humor, or performance. People with this path often feel a pull to be seen and heard, because self-expression is the actual mechanism by which this number does its work in the world. The growth edge is following through on ideas, not just generating them." },
+    4: { title: "Life Path 4 — The Builder", body: "4 is the number of the square — four corners, four walls, four seasons — the first number that can hold weight and stay standing. Life Path 4s carry that structural instinct: you're drawn to systems, schedules, and durable effort because your core number is literally the shape of stability. This often looks like patience and reliability that others lean on, sometimes at the cost of feeling stuck in obligation. The growth edge is remembering that structure should serve freedom, not replace it." },
+    5: { title: "Life Path 5 — The Seeker of Freedom", body: "5 sits at the midpoint of the single digits 1 through 9, the hinge between the grounded first half and the expansive second half — which is why it's the number most associated with change and movement. Life Path 5s feel that midpoint tension directly: a restlessness that pushes you toward variety, travel, and new experience rather than routine. This is often mistaken for flakiness, but it's really an accurate read of your own nature — you're wired to need change to feel alive. The growth edge is building enough structure that freedom doesn't collapse into instability." },
+    6: { title: "Life Path 6 — The Caretaker", body: "6 follows 5's restlessness with the number of harmony and responsibility — in numerology it's associated with home, family, and community because 6 represents the point where individual freedom starts asking what it owes to others. Life Path 6s are wired to notice who needs care and to step in, often before being asked. This makes you the person people rely on in a crisis, but it can tip into over-responsibility for things that aren't yours to fix. The growth edge is caring for others without disappearing into their needs." },
+    7: { title: "Life Path 7 — The Seeker of Truth", body: "7 is traditionally the numerology number of the inner life — it stands apart from the tidy pairings of the numbers around it, which mirrors why Life Path 7s often feel one step removed from the crowd, more interested in understanding a thing than simply participating in it. This produces sharp analytical instincts and a genuine hunger for truth over comfort. People with this path recharge through solitude and can find small talk draining because it doesn't engage the depth they're built for. The growth edge is letting people in before you've figured everything out." },
+    8: { title: "Life Path 8 — The Achiever", body: "8 is symbolically tied to the infinity symbol when turned on its side, which is why it's associated with material mastery, ambition, and the flow of resources and authority. Life Path 8s carry an instinct for building influence and are comfortable with power in a way other numbers shy away from. This can read as drive or as intimidating intensity depending on how it's channeled. The growth edge is using that authority to lift others, not just to win." },
+    9: { title: "Life Path 9 — The Humanitarian", body: "9 is the last of the single digits — the number that contains and completes the cycle before it starts over again at 1 — which is why Life Path 9 is associated with wisdom, closure, and giving back what's been learned. You likely feel a pull toward causes bigger than yourself and a discomfort with pure self-interest, because your number's role is literally to complete and release, not to accumulate. This makes you generous and emotionally attuned, but you can struggle to ask for anything in return. The growth edge is letting yourself receive, not just give." },
+    11: { title: "Life Path 11 — The Intuitive Visionary", body: "11 doesn't reduce to 2 the way ordinary numerology math would suggest — it's a master number, held at its higher vibration on purpose, doubling the number's charge. That's why Life Path 11 carries heightened, almost electric sensitivity: you pick up on things — moods, undercurrents, future possibilities — before you can explain how you know them. This intuitive gift is real, but it comes with amplified nervous energy and self-doubt, since you're processing more input than a standard Life Path. The growth edge is trusting the insight without needing to justify it logically first." },
+    22: { title: "Life Path 22 — The Master Builder", body: "22 is 11 doubled again, and it pairs the visionary sensitivity of 11 with the structural instinct of 4 (2+2), which is why it's called the Master Builder — the rare combination of big vision and the practical follow-through to actually construct it. People with this Life Path often carry outsized ambitions from a young age, along with real pressure to deliver on them. This is a demanding number to hold; the potential is real, but so is the self-imposed weight of living up to it. The growth edge is building at a sustainable pace instead of racing toward the whole vision at once." },
+    33: { title: "Life Path 33 — The Master Teacher", body: "33 combines two 3s — creative expression — at master intensity, directed through the caretaking instinct of 6 (3+3), producing what's traditionally called the Master Teacher: someone whose creative gifts exist specifically to heal, guide, or uplift others rather than for self-expression alone. This is the rarest and most demanding Life Path, often carrying a felt sense of responsibility for others' wellbeing that can feel disproportionate to one person. The growth edge is remembering you can teach and heal without carrying everyone's weight personally." }
+  };
+
+  var EXPRESSION_MEANING = {
+    1: { title: "Expression 1 — Natural Leader", body: "Your Expression Number comes from every letter in your full name reduced to its numeric value, so this number reflects the talents built into the identity you were given at birth — in your case, the drive to lead. The letters in your name carry a 1 charge, meaning your natural approach to any task is to originate it rather than join someone else's plan already in motion. This talent shows up as confidence in unfamiliar situations, because starting from zero doesn't intimidate you the way it does others." },
+    2: { title: "Expression 2 — Natural Collaborator", body: "Because your Expression Number is calculated from the full letter-value sum of your birth name, it reflects an ability that was, in a sense, spelled directly into you: the talent for collaboration and mediation. Wherever you go, you tend to become the connective tissue between people — noticing what each side needs and translating between them. This talent is subtle rather than showy, which means it's often undervalued by others until it's missing." },
+    3: { title: "Expression 3 — Natural Communicator", body: "Your Expression Number of 3 sums up the letters of your name into the number of creative expression, meaning communication is quite literally encoded in your name's numerology. You have a natural facility with words, art, or performance — ideas don't stay abstract for you, they want to become something shareable. This talent thrives on an audience, even a small one, because expression by definition needs somewhere to land." },
+    4: { title: "Expression 4 — Natural Organizer", body: "The letters that make up your name reduce to a 4, the number of structure, which is why your standout talent is building systems that hold up under pressure. Where others see a messy situation, you instinctively see the missing framework that would fix it. This talent for organization is genuinely rare and valuable, even when it goes unnoticed because good systems are invisible when they're working." },
+    5: { title: "Expression 5 — Natural Adapter", body: "Your name's letters sum to a 5, the number most associated with adaptability, which is why your core talent is thriving in situations that would rattle other people — new environments, sudden changes, last-minute pivots. You process change as opportunity rather than threat, a rare wiring that makes you valuable in fast-moving or unpredictable work. The name you were given quite literally spells out a comfort with motion." },
+    6: { title: "Expression 6 — Natural Nurturer", body: "Your Expression Number of 6 emerges from the letters of your name landing on numerology's number of care and responsibility, meaning your standout talent is looking after the people and situations around you. You notice needs before they're voiced and tend to step into a caretaking or teaching role without being asked. This talent is why people trust you quickly — it reads as genuine because it is." },
+    7: { title: "Expression 7 — Natural Analyst", body: "The letters in your name sum to a 7, numerology's number of depth and inquiry, which is why your talent leans toward research, analysis, and understanding something fully before acting on it. You're the person who asks the question nobody else thought to ask. This talent for depth can be mistaken for slowness, but it's really thoroughness — you'd rather be right than fast." },
+    8: { title: "Expression 8 — Natural Executive", body: "Your name reduces to an 8, the number of authority and material command, meaning your talent is managing resources, people, and outcomes at scale. You have an instinct for what a situation is actually worth and how to steer it toward a strong result. This talent for command was, in a sense, written into your name before you ever used it." },
+    9: { title: "Expression 9 — Natural Inspirer", body: "The letters of your name sum to a 9, numerology's number of completion and compassion, which is why your talent lies in inspiring and giving to others — you have a gift for making people feel seen. This talent for generosity is baked into your name's structure, not just your personality, which is why it feels so effortless to you even when it takes real energy." },
+    11: { title: "Expression 11 — Illuminator", body: "Your name's letters sum to the master number 11, meaning your Expression Number is held at its higher, undivided vibration rather than reduced to 2 — your natural talent is illuminating others through intuition and inspired ideas that arrive fully formed. This is a rarer, more intense expression gift, and it can feel like more responsibility than talent some days. The name you carry was built, numerologically, to transmit insight." },
+    22: { title: "Expression 22 — Master Builder of Ideas", body: "Your name sums to the master number 22, combining visionary scope with practical execution, which is why your talent is turning big, sometimes unrealistic-sounding ideas into things that actually get built. This is considered one of the rarest and most powerful Expression Numbers precisely because it pairs imagination with follow-through. It's a lot to carry, but it's also a genuine gift." },
+    33: { title: "Expression 33 — Master Healer & Teacher", body: "Your name reduces to the master number 33, the rarest Expression Number, combining creative gifts with a deep instinct to heal or teach — meaning your talents were, numerologically, built for service to others rather than for yourself alone. This is a demanding gift to hold gracefully, and it's worth remembering that teaching others doesn't require exhausting yourself first." }
+  };
+
+  var SUN_SIGN_MEANING = {
+    Aries: "Aries opens the zodiac wheel as the first sign of spring, which is the root of its bold, first-mover energy — cardinal Fire ruled by Mars, the planet of action. Being first in the cycle means Aries has no precedent to follow, which is why you tend to act on instinct rather than deliberation. The reason behind your directness is structural: Aries has never symbolically had to wait for anything before it, so waiting doesn't come naturally now either.",
+    Taurus: "Taurus follows Aries as the second sign, and where Aries burns fast, Taurus is fixed Earth ruled by Venus — built to hold steady rather than sprint. That fixed-Earth combination is why you value consistency, comfort, and things that last: Earth wants tangible results, and \"fixed\" mode wants to keep what already works rather than chase what's new. Your steadiness isn't stubbornness for its own sake — it's a genuine strength for anything that requires staying power.",
+    Gemini: "Gemini is mutable Air ruled by Mercury, the planet of communication, arriving right at the seasonal shift from spring to summer, and \"mutable\" means built for adaptation at exactly that transition point. That combination — quick-moving Air plus change-ready mutability — is the root of your curiosity and conversational quickness: your mind is built to process and relay information rather than sit still with one idea. The trade-off is that depth sometimes loses out to range, which is worth watching for.",
+    Cancer: "Cancer is cardinal Water ruled by the Moon, arriving at the start of summer, which is why it initiates through feeling rather than force — cardinal signs start things, and Water starts things emotionally. This is the structural reason Cancer is so protective of home and close relationships: the Moon governs instinct and memory, so your sense of security is tied to emotional continuity, not achievement. Your intuition about people is a genuine skill, not oversensitivity.",
+    Leo: "Leo is fixed Fire ruled by the Sun itself, at the peak of summer — the sign literally aligned with the star everything else orbits, which is the root of Leo's natural magnetism and need to be seen. Fixed Fire means your warmth is steady and self-generated rather than flickering, which is why people are drawn to be near it. The growth edge is remembering the Sun shines on others too.",
+    Virgo: "Virgo is mutable Earth ruled by Mercury, arriving as summer turns toward autumn — a season of harvest and sorting, which is exactly Virgo's core function: refining, organizing, and improving what already exists. Mercury's influence gives Virgo the analytical precision to notice details others miss, while mutable Earth keeps that precision practical rather than purely theoretical. The trade-off is a tendency toward self-criticism that's worth softening.",
+    Libra: "Libra is cardinal Air ruled by Venus, opening autumn at the exact astronomical balance point of the equinox — day and night in equal measure — which is the literal root of Libra's obsession with fairness and balance. Cardinal Air means you initiate through relationship and diplomacy rather than solo action; you instinctively look for the version of a decision that accounts for both sides. The growth edge is making a call even when perfect balance isn't available.",
+    Scorpio: "Scorpio is fixed Water ruled by Mars and Pluto, arriving as autumn deepens toward winter — a season of things dying back and going underground, which is the root of Scorpio's comfort with intensity, transformation, and what other signs avoid looking at directly. Fixed Water means your emotional depth doesn't dissipate quickly; you feel things at full strength and hold onto them. This makes you fiercely loyal, but also slow to forgive.",
+    Sagittarius: "Sagittarius is mutable Fire ruled by Jupiter, the planet of expansion, arriving as the year turns toward its final stretch — which is why this sign is wired for optimism, exploration, and the search for bigger meaning rather than settling into what's already known. Mutable Fire means your enthusiasm adapts to wherever the next horizon is, rather than burning in one fixed direction. The trade-off is sometimes promising more than you follow through on.",
+    Capricorn: "Capricorn is cardinal Earth ruled by Saturn, the planet of structure and discipline, arriving at the winter solstice — the year's literal turning point from darkness back toward light, achieved through endurance rather than ease. That's the structural root of your ambition: cardinal Earth initiates through sustained, practical effort aimed at a long-term result, not a quick win. Your discipline is a genuine strength, worth pairing with permission to rest.",
+    Aquarius: "Aquarius is fixed Air ruled by Saturn and Uranus, arriving in deep winter, which produces an unusual combination: fixed conviction paired with Uranus's drive toward innovation and the unconventional. That's the root of why you can hold an idea firmly while still being the person most willing to break from tradition — you're fixed on being ahead of the curve, not on the curve itself. The growth edge is staying connected to people while pursuing the idea.",
+    Pisces: "Pisces is mutable Water ruled by Neptune, the last sign of the zodiac, which means it absorbs and dissolves the boundaries built by the eleven signs before it — the structural root of Pisces's empathy, imagination, and porous sense of self. Mutable Water means you take on the emotional tone of whatever's around you, which is a gift for compassion and art, and a challenge for maintaining boundaries. Protecting your own energy is worth prioritizing."
+  };
+
+  var ANIMAL_MEANING = {
+    Rat: "In the mythological Great Race that determined the zodiac order, the clever Rat arrived first — not through strength, but by riding across the river on the Ox's back and jumping off at the last moment. That's the root of the Rat's reputation for resourcefulness: the animal that leads the entire 12-year cycle got there through wit rather than force, which is why Rat years and Rat-born people are associated with sharp thinking and finding the efficient path others miss.",
+    Ox: "The Ox came in second in the Great Race, having carried the Rat most of the way without complaint — steady, hardworking, and unaware it had been outmaneuvered until the very end. This origin story is the root of the Ox's reputation for quiet dependability: the strength to carry others and the patience to keep going even when the outcome isn't fully in your control.",
+    Tiger: "The Tiger arrived third in the Great Race despite its power, having been slowed by the strong currents it fought through on sheer will rather than cunning. That's the structural root of Tiger energy: bold, confrontational courage that sometimes costs more effort than a cleverer approach would, but earns respect for showing up and fighting rather than finding a shortcut.",
+    Rabbit: "The Rabbit crossed fourth by hopping across stones and a floating log — a gentler, more resourceful path than the Tiger's brute-force swim. This is the root of the Rabbit's reputation for grace under pressure: getting where you need to go without unnecessary conflict, relying on perceptiveness and good timing rather than force.",
+    Dragon: "The Dragon, despite being able to fly, arrived fifth because it stopped to bring rain to a village and help other creatures along the way — power used generously rather than purely for self-advancement. That origin is why Dragon energy carries both ambition and magnetism: the most powerful creature in the race chose to help, which is why Dragons are seen as commanding but not purely self-interested.",
+    Snake: "The Snake arrived sixth by hiding on the Horse's hoof and startling it near the finish line to slip ahead — a strategic, low-visibility move rather than a direct contest of strength. This is the root of the Snake's reputation for quiet strategy: wisdom and patience used to achieve a goal without needing to be the loudest or most visible competitor.",
+    Horse: "The Horse arrived seventh, having been startled right at the finish by the hidden Snake — a reminder that even strong, fast movement can be derailed by something unseen. This underlies the Horse's independent, always-moving nature: a drive to keep going toward the horizon, aware that the path isn't always as clear as it looks.",
+    Goat: "The Goat, Monkey, and Rooster arrived together in eighth place, having built a raft as a team to cross the river — cooperation rather than individual competition. The Goat's role in that story is the gentle, aesthetic contributor, which is the root of its reputation for creativity, sensitivity, and a preference for harmony over conflict.",
+    Monkey: "Sharing eighth place with the Goat and Rooster after building a raft together, the Monkey's role in the story was the clever problem-solver who helped steer the group across. That's the root of Monkey energy: inventive, quick-thinking, and good in situations that need an improvised solution rather than a rehearsed plan.",
+    Rooster: "Completing the raft-building trio in eighth place, the Rooster's contribution was confident, vocal leadership — steering with certainty even without a guarantee of success. This is the root of the Rooster's reputation for sharp observation and self-assured judgment: the willingness to speak up when others hesitate.",
+    Dog: "The Dog arrived eleventh despite being a strong swimmer, having gotten distracted playing in the water along the way — loyalty and enjoyment outweighing pure competitiveness. This underlies the Dog's reputation for honesty and warmth: less driven by winning outright, more by the relationships and small joys along the way.",
+    Pig: "The Pig arrived last, twelfth, after stopping to eat and then falling asleep — content rather than anxious about the outcome. This origin is the root of the Pig's reputation for generosity and good humor: a nature that prioritizes enjoying life's simple pleasures over anxious striving, without any loss of warmth toward others."
+  };
+
+  var ELEMENT_MEANING = {
+    Wood: "In Chinese Five Element theory, Wood represents growth and expansion — it's the element that pushes upward and outward, like a tree growing toward light. Layered onto your zodiac animal, Wood adds ambition and forward momentum: you're not just defined by your animal's core traits, but by an underlying drive to keep growing rather than stay still.",
+    Fire: "Fire in Five Element theory represents passion, transformation, and rapid energy — the element that lights up and moves quickly through everything around it. Layered onto your zodiac animal, Fire intensifies your instincts into something more urgent and expressive, adding heat and momentum to whatever your animal sign already leans toward.",
+    Earth: "Earth in Five Element theory represents stability, nourishment, and groundedness — the element everything else grows from or returns to. Layered onto your zodiac animal, Earth adds a practical, grounding quality to your instincts, favoring steady follow-through over dramatic gestures.",
+    Metal: "Metal in Five Element theory represents structure, precision, and discipline — shaped under pressure into something sharp and durable. Layered onto your zodiac animal, Metal adds focus and high standards, sharpening your animal's natural instincts into something more deliberate and refined.",
+    Water: "Water in Five Element theory represents intuition, adaptability, and emotional depth — it flows around obstacles rather than through them. Layered onto your zodiac animal, Water adds perceptiveness and emotional intelligence, softening and deepening whatever your animal sign already brings."
+  };
+
+  // ---------- Transit snapshot (shared, system-wide; refreshed periodically — not live ephemeris) ----------
+  // Snapshot source: tropical planetary positions for the current date, per public ephemeris data.
+
+  var TRANSIT_SNAPSHOT = {
+    displayDate: "August 24, 2026",
+    planets: [
+      { name: "Sun", sign: "Virgo" },
+      { name: "Moon", sign: "Capricorn" },
+      { name: "Mercury", sign: "Leo" },
+      { name: "Venus", sign: "Libra" },
+      { name: "Mars", sign: "Cancer" }
+    ]
+  };
+
+  var TRANSIT_GENERAL = {
+    Sun: "The Sun spends its yearly month-long stay in Virgo from late August into September, turning the collective mood toward refinement — cleaning up loose ends, tightening routines, and paying attention to details that got skipped over during summer's more expansive stretch.",
+    Moon: "The fast-moving Moon changes sign every two to three days, and it's currently passing through Capricorn, favoring composure over drama — a practical, business-like mood well suited to getting real work done rather than processing feelings out loud.",
+    Mercury: "Mercury, the planet of communication, is moving through Leo right now, making conversations warmer, more confident, and more expressive — a strong stretch for pitching ideas, telling a story well, or simply speaking your mind with more conviction than usual.",
+    Venus: "Venus is currently in Libra, a sign it rules — this is Venus operating at full strength, smoothing over friction in relationships and heightening appreciation for fairness, beauty, and balanced partnership.",
+    Mars: "Mars, the planet of drive and action, is moving through Cancer right now, which channels ambition through protection and instinct rather than direct confrontation — action motivated by security and care for the people close to you, rather than by competition."
+  };
+
+  // Personalized transit snippet keyed by natal Sun sign, per the reading-engine spec's
+  // lookup-table approach (transiting placements are the same for everyone today;
+  // personalization varies by the user's natal Sun sign rather than live aspect math).
+  var TRANSIT_PERSONAL_BY_SUN_SIGN = {
+    Aries: "With the Sun currently in Virgo — a sign that values precision over the bold instinct you lead with — this stretch may feel like a call to slow down and sweat the details a little more than usual. Mars in Cancer complicates that further: your ruling planet is currently in a more protective, indirect mode than you're used to, so pure force may not be the most effective route to what you want right now. Venus in Libra offers a helpful counterbalance, softening your directness in relationships and rewarding patience in negotiations. Use this window to finish what you started rather than launch something new.",
+    Taurus: "The Sun's current pass through Virgo, a fellow Earth sign, is a genuinely supportive stretch for you — practical effort is rewarded, and your natural patience is exactly what this Virgo season calls for. Venus, your ruling planet, is currently in Libra, which puts extra emphasis on fairness and give-and-take in your relationships; lean into compromise rather than digging in. Mercury in Leo adds a confident, expressive edge to communication that's worth borrowing even if it's not your default style.",
+    Gemini: "Mercury, your ruling planet, is currently moving through confident, expressive Leo — a great match for your natural communication gifts, giving your words extra warmth and persuasive punch right now. The Sun's current stay in fellow-mutable Virgo supports your adaptability, though it also asks you to bring more follow-through and precision than you might default to. Venus in Libra, a fellow Air sign, makes this a genuinely good window for relationships and creative collaboration.",
+    Cancer: "Mars is currently moving through your own sign, Cancer, which means your usual protective instincts have extra fuel right now — channel that drive into something that actually needs defending rather than letting it turn into unnecessary worry. The Sun in Virgo favors quiet, practical progress over big emotional swings. The Moon's current pass through Capricorn asks you to balance your natural sensitivity with a bit more composure than usual.",
+    Leo: "Mercury is currently moving through your own sign, Leo, amplifying your natural gift for expressive, confident communication — this is a strong window to speak up, pitch an idea, or simply be heard. The Sun's current stay in Virgo, the sign right after yours, asks you to follow that expression with real substance and follow-through rather than performance alone. Venus in Libra supports charm and connection in relationships without much extra effort on your part.",
+    Virgo: "The Sun is currently moving through your own sign, Virgo — this is your solar season, a natural yearly reset point where your core themes of refinement, service, and getting things right are especially amplified and supported. Mercury, your ruling planet, is currently in expressive Leo, encouraging you to communicate with more warmth and confidence than your usual understatement. Use this stretch to set intentions for the year ahead, since the Sun's return to your sign is traditionally considered a personal new-year moment.",
+    Libra: "Venus, your ruling planet, is currently in your own sign, Libra, putting you at the center of this transit window — relationships, fairness, and beauty are especially highlighted, and charm comes easily right now. The Sun's current stay in Virgo, the sign just before yours, is quietly wrapping up loose ends so you can step into your own season with a clean slate. Mars in Cancer asks for a gentler, more protective approach to conflict than your usual diplomatic balancing act.",
+    Scorpio: "Mars, one of your two ruling planets, is currently moving through Cancer, a fellow Water sign — this supports your intensity and instinct, but channels it toward protection and emotional security rather than raw confrontation. The Sun in Virgo favors patient, behind-the-scenes strategy over dramatic moves, which suits your preference for control over exposure. Venus in Libra asks you to soften and negotiate in relationships rather than default to all-or-nothing intensity.",
+    Sagittarius: "The Sun's current stay in detail-oriented Virgo is a useful counterbalance to your big-picture, adventure-seeking nature — this is a good window to actually finish the projects your enthusiasm started. Mercury in Leo, a fellow Fire sign, supports bold, confident communication and storytelling that comes naturally to you. Mars in Cancer suggests channeling your usual directness through more care for others' feelings than you might default to.",
+    Capricorn: "The Moon is currently moving through your own sign, Capricorn, favoring the composed, get-things-done mood you're most comfortable in — emotional restraint feels natural right now rather than forced. The Sun in fellow-Earth Virgo strongly supports practical ambition and long-term planning, two things you're already built for. Venus in Libra softens your usual businesslike approach to relationships, rewarding a bit more warmth and flexibility than you might default to.",
+    Aquarius: "The Sun's current stay in Virgo asks you to bring more practical follow-through to your ideas than you might naturally prioritize — inspiration is easy for you, execution is the growth edge this season highlights. Venus in Libra, a fellow Air sign, is a genuinely supportive stretch for relationships and creative collaboration. Mars in Cancer suggests a more protective, less detached approach to the people close to you than your usual independent streak.",
+    Pisces: "The Sun's current stay in fellow-mutable Virgo is a useful counterbalance to your dreamy, boundary-dissolving nature, encouraging more structure and practical follow-through than you'd choose on your own. Mars in Cancer, a fellow Water sign, supports your intuition and channels it toward protecting the people and causes you care about. Venus in Libra adds grace and harmony to relationships, smoothing over the emotional intensity Water signs can carry."
+  };
+
+  // Personal Year meaning + prediction, keyed 1-9 (Personal Year always reduces
+  // fully per the reading-engine spec's stated convention). The current year
+  // number is interpolated into the rendered title at render time.
+  var PERSONAL_YEAR_MEANING = {
+    1: { label: "A Year of New Beginnings", body: "A Personal Year 1 marks the start of a fresh nine-year numerology cycle — mathematically, it's the year your personal-year count resets back to 1, which is why it consistently shows up as a launch year: new jobs, new relationships, new projects that don't yet have momentum but need someone to take the first step. The prediction that follows from the number itself is straightforward — whatever you start in earnest this year has an unusually long runway ahead of it, because you're at the beginning of the cycle, not the middle or the end. This is a year to act rather than wait for perfect conditions." },
+    2: { label: "A Year of Partnership and Patience", body: "Personal Year 2 follows the launch energy of a 1 with the numerology of pairing and patience — the year for nurturing what you started rather than starting something new. Practically, this tends to show up as a slower-feeling year built around relationships, negotiations, and behind-the-scenes groundwork rather than visible wins. The prediction that follows: results this year come through cooperation and timing more than solo effort, so partnerships formed now are worth taking seriously." },
+    3: { label: "A Year of Expression and Growth", body: "Personal Year 3 carries the creative-expression charge of the number 3, which is why it tends to feel lighter and more socially active than the year before it — a stretch built for communication, visibility, and joy rather than heavy lifting. The prediction that follows from the number's nature: opportunities this year are more likely to arrive through conversations, content, or self-expression than through quiet behind-the-scenes work, so putting yourself and your ideas out there pays off disproportionately now." },
+    4: { label: "A Year of Foundation-Building", body: "Personal Year 4 carries the structural weight of the number 4 — the numerology of the square and the foundation — which is why this stretch of the cycle tends to demand real, unglamorous work: budgeting, organizing, and building systems that will support the more expansive years still ahead. The prediction that follows: effort invested this year compounds later rather than paying off immediately, so treat slow, steady progress as success in itself rather than a sign you're falling behind." },
+    5: { label: "A Year of Change and Freedom", body: "Personal Year 5 sits at the numerological midpoint of the nine-year cycle, the hinge between the foundation-building years before it and the harvest years ahead — which is why it consistently produces change: a move, a shift in direction, an unplanned opportunity. The prediction that follows from the number's position: resisting change this year tends to feel harder than adapting to it, so the smoother path is treating disruption as the year's actual purpose rather than an obstacle to it." },
+    6: { label: "A Year of Responsibility and Home", body: "Personal Year 6 follows the disruption of a 5 with the numerology of responsibility and care, which is why this stretch of the cycle tends to center on home, family, and commitments that ask more of you than they did last year. The prediction that follows: this is a year where showing up for the people and obligations around you pays off more than pursuing purely individual ambitions, even if it feels like less personal momentum in the moment." },
+    7: { label: "A Year of Reflection and Insight", body: "Personal Year 7 carries the introspective charge of the number 7 — a deliberate slowdown built into the nine-year cycle for processing and understanding before the more outward-facing years that follow. The prediction that follows from the number's nature: pushing hard for external results this year tends to underperform, while time spent studying, reflecting, or simply stepping back tends to produce insight that pays off in the years ahead." },
+    8: { label: "A Year of Achievement and Power", body: "Personal Year 8 carries the numerology of authority and material outcomes, arriving late enough in the cycle that the groundwork from earlier years is finally ready to convert into visible results — financial, professional, or otherwise. The prediction that follows: this is statistically the strongest year in the cycle for tangible achievement, promotions, or financial gain, provided the earlier years' foundation-building actually happened." },
+    9: { label: "A Year of Completion and Release", body: "Personal Year 9 closes out the nine-year cycle, carrying the numerology of completion, release, and letting go before the cycle resets to 1 next year. The prediction that follows from the number's position: this year favors finishing, forgiving, and clearing out what no longer fits rather than starting anything new, since anything begun now would only have a few months before the cycle restarts. Treat loose ends as the year's real priority." }
+  };
+
+  // Fuller horoscope-style personality profile per animal sign — distinct from
+  // the origin-story meaning above, focused on strengths, style, and the
+  // trait worth watching.
+  var ANIMAL_PERSONALITY = {
+    Rat: "Rats are natural strategists who read situations quickly and rarely get caught off guard — you tend to have a backup plan before anyone else notices a problem exists. In work and relationships, you value resourcefulness and mental agility over brute effort, and you're happiest when you're a step ahead. The trait to watch is over-calculating a low-stakes situation instead of just relaxing into it.",
+    Ox: "Oxen are quietly tenacious, more interested in getting the job done right than getting credit for it — you're the person a team can count on to still be there after everyone else has burned out. In relationships you show love through consistency and follow-through rather than grand gestures. The trait to watch is rigidity — sticking to a plan past the point it's still serving you.",
+    Tiger: "Tigers lead with courage and a strong personal code, often stepping into situations others hesitate to touch. You're drawn to challenge and competition, and you'd rather take a bold swing and miss than play it safe. The trait to watch is impatience with people or processes that move slower than your instincts want to.",
+    Rabbit: "Rabbits read a room before anyone else finishes walking in, using tact and timing to get what they want without unnecessary conflict. You're drawn to beauty, comfort, and harmonious environments, and you tend to avoid confrontation in favor of a quieter, more diplomatic route. The trait to watch is avoiding a necessary hard conversation for too long.",
+    Dragon: "Dragons carry natural charisma and big ambitions, often becoming the person a room organizes around without even trying. You're comfortable with visibility and expect a lot of yourself, which can inspire others or, at times, come across as overconfidence. The trait to watch is following through on commitments with the same energy you used to make them.",
+    Snake: "Snakes think several moves ahead, preferring quiet observation over loud participation until they're ready to act. You have sharp intuition about people's real motives and a talent for strategy that others often underestimate. The trait to watch is guardedness that keeps people at more distance than you actually want.",
+    Horse: "Horses are driven by movement and independence, most alive when there's a clear direction to run toward. You bring energy and enthusiasm to whatever you're focused on, and you're not built for sitting still in a role that's gone stagnant. The trait to watch is restlessness that abandons good things too early in search of the next horizon.",
+    Goat: "Goats bring warmth, creativity, and a genuine appreciation for beauty into whatever they touch, often becoming the person others turn to for emotional or aesthetic judgment. You do your best work in supportive, low-conflict environments rather than high-pressure competition. The trait to watch is avoiding decisions that require disappointing someone.",
+    Monkey: "Monkeys solve problems by improvising rather than following the manual, and you're happiest when a situation calls for cleverness over routine. You bring humor and quick thinking to group settings, often diffusing tension before it builds. The trait to watch is losing interest once the clever part of a project is done and the routine execution begins.",
+    Rooster: "Roosters have strong opinions and the confidence to voice them, often becoming the person in a group who says the thing everyone else is thinking. You take pride in doing things well and holding yourself and others to real standards. The trait to watch is bluntness landing harder than intended.",
+    Dog: "Dogs are fiercely loyal and quick to notice when something is unfair, often becoming the person who defends others even at personal cost. You value honesty and trust over surface-level harmony, and people learn quickly that your word means something. The trait to watch is a tendency toward worry, especially about people you care about.",
+    Pig: "Pigs bring generosity and genuine warmth to relationships, rarely holding a grudge and quick to assume good intent in others. You find real contentment in simple pleasures — good food, good company — rather than constant striving. The trait to watch is being taken advantage of by people who don't reciprocate your generosity."
+  };
+
+  function buildYearOutlook(userAnimal, userElement, currentYear, yearAnimal, yearElement) {
+    var relationship = getYearRelationship(userAnimal, yearAnimal);
+    var intro = currentYear + " is a " + yearElement + " " + yearAnimal + " year. ";
+    var relationText;
+
+    if (relationship === "own") {
+      relationText = currentYear + " is your own zodiac year — the " + userAnimal +
+        " year comes back around every 12 years, and in Chinese astrology this is traditionally called your Ben Ming Nian. Rather than a lucky year, it's considered a year of heightened stakes: you're said to \"offend Tai Sui,\" the year's governing deity, simply by sharing its animal, which is why tradition calls for extra caution, avoiding unnecessary risks, and leaning on protective symbols like the color red. It's a year to move deliberately, not a year to sit still.";
+    } else if (relationship === "harmony") {
+      var group = findTrineGroup(userAnimal) || [];
+      var allies = group.filter(function (a) { return a !== userAnimal; });
+      relationText = "The " + yearAnimal + " belongs to your zodiac's natural affinity trio, alongside the " +
+        allies.join(" and the ") + " — three signs traditionally read as allies who share similar instincts and rarely work against each other. Because you're in harmony with the year's ruling animal, momentum tends to come more easily this year: opportunities are more likely to open up than to be blocked. Lean into collaboration with the people and plans this year favors.";
+    } else if (relationship === "clash") {
+      relationText = "The " + yearAnimal + " sits in direct opposition to the " + userAnimal +
+        " on the 12-year zodiac wheel — the two signs are exactly six years apart, the classic clash relationship in Chinese astrology. Traditionally this isn't read as bad luck so much as a year that asks for extra flexibility, since friction and unexpected changes are more likely to show up in your path. The traditional advice for a clash year is caution rather than passivity — keep moving, just watch your footing.";
+    } else {
+      relationText = "The " + yearAnimal + " has neither a strong clash nor a strong alliance with the " + userAnimal +
+        " this year — a fairly neutral relationship in Chinese astrology. That leaves this year's outcomes more dependent on your own effort and your sign's natural strengths than on any particular cosmic headwind or tailwind.";
+    }
+
+    var closing = " Combined with your own " + userElement + " " + userAnimal + " nature — " + ANIMAL_TRAITS[userAnimal] +
+      " — the practical move this year is to lead with that strength rather than fight against it.";
+
+    return intro + relationText + closing;
+  }
+
+  // ---------- Compatibility Reading (per reading-engine spec section 6) ----------
+
+  var SIGN_ELEMENT = {
+    Aries: "Fire", Leo: "Fire", Sagittarius: "Fire",
+    Taurus: "Earth", Virgo: "Earth", Capricorn: "Earth",
+    Gemini: "Air", Libra: "Air", Aquarius: "Air",
+    Cancer: "Water", Scorpio: "Water", Pisces: "Water"
+  };
+
+  var SIGN_MODALITY = {
+    Aries: "Cardinal", Cancer: "Cardinal", Libra: "Cardinal", Capricorn: "Cardinal",
+    Taurus: "Fixed", Leo: "Fixed", Scorpio: "Fixed", Aquarius: "Fixed",
+    Gemini: "Mutable", Virgo: "Mutable", Sagittarius: "Mutable", Pisces: "Mutable"
+  };
+
+  // Static numerology pairing tables (tier 1-5), per spec 6.2 — classically
+  // complementary pairs skew Cosmic Match, classically friction-prone pairs
+  // skew Some Friction, same number skews Strong Harmony, everything else
+  // is Balanced. Reused for both Life Path and Expression pairings.
+  var NUMEROLOGY_COMPLEMENTARY_PAIRS = [
+    [1, 5], [1, 7], [2, 4], [2, 6], [2, 8], [3, 6], [3, 9], [4, 8], [5, 7], [6, 9],
+    [2, 11], [4, 22], [6, 33], [11, 22], [11, 33], [22, 33]
+  ];
+
+  var NUMEROLOGY_FRICTION_PAIRS = [
+    [1, 2], [1, 4], [1, 8], [3, 4], [3, 7], [4, 5], [5, 6], [5, 9], [6, 7], [8, 9]
+  ];
+
+  function pairListHas(list, a, b) {
+    var lo = Math.min(a, b), hi = Math.max(a, b);
+    for (var i = 0; i < list.length; i++) {
+      if (list[i][0] === lo && list[i][1] === hi) return true;
+    }
+    return false;
+  }
+
+  function numerologyPairTier(a, b) {
+    if (a === b) return 4;
+    if (pairListHas(NUMEROLOGY_COMPLEMENTARY_PAIRS, a, b)) return 5;
+    if (pairListHas(NUMEROLOGY_FRICTION_PAIRS, a, b)) return 2;
+    return 3;
+  }
+
+  function sunSignPairTier(signA, signB) {
+    if (signA === signB) return 4;
+    var elemA = SIGN_ELEMENT[signA], elemB = SIGN_ELEMENT[signB];
+    var modA = SIGN_MODALITY[signA], modB = SIGN_MODALITY[signB];
+    if (elemA === elemB) return 5;
+    var complementary =
+      (elemA === "Fire" && elemB === "Air") || (elemA === "Air" && elemB === "Fire") ||
+      (elemA === "Earth" && elemB === "Water") || (elemA === "Water" && elemB === "Earth");
+    if (complementary) return 4;
+    var opposing =
+      (elemA === "Fire" && elemB === "Water") || (elemA === "Water" && elemB === "Fire") ||
+      (elemA === "Earth" && elemB === "Air") || (elemA === "Air" && elemB === "Earth");
+    if (opposing) return 2;
+    if (modA === modB) return 3;
+    return 3;
+  }
+
+  function zodiacPairTier(a, b) {
+    if (a === b) return 4;
+    var group = findTrineGroup(a);
+    if (group && group.indexOf(b) !== -1) return 5;
+    if (isLiuHe(a, b)) return 4;
+    if (isClash(a, b)) return 1;
+    return 3;
+  }
+
+  function overallTierFromScore(score) {
+    if (score >= 80) return "Cosmic Match";
+    if (score >= 60) return "Strong Harmony";
+    if (score >= 40) return "Balanced";
+    if (score >= 20) return "Some Friction";
+    return "Challenging";
+  }
+
+  var LIFEPATH_PAIR_PHRASE = {
+    5: "your Life Paths sit in one of numerology's classic complementary pairings — different core rhythms that tend to fill in each other's gaps rather than compete",
+    4: "your Life Paths match or closely reinforce each other, giving you a similar baseline pace and similar priorities day to day",
+    3: "your Life Paths don't strongly clash or amplify each other — a neutral baseline that leaves room for either of you to set the tone",
+    2: "your Life Paths sit in one of numerology's classic friction pairings, which can show up as working at different speeds or wanting different things from the same situation",
+    1: "your Life Paths pull toward genuinely different core rhythms — the kind of difference that takes real, ongoing effort to sync"
+  };
+
+  var EXPRESSION_PAIR_PHRASE = {
+    5: "your Expression Numbers — how you each naturally show up and contribute — line up so your talents tend to build on each other rather than overlap",
+    4: "your Expression Numbers share the same or a closely related natural approach, so your default ways of contributing tend to mesh without much negotiation",
+    3: "your Expression Numbers don't strongly overlap or conflict — you likely bring noticeably different skills to the table, which is neutral rather than a problem",
+    2: "your Expression Numbers sit in a friction pairing, so your natural approaches to getting things done can rub against each other even when you want the same outcome",
+    1: "your Expression Numbers point to quite different natural strengths — a difference that can either divide labor well or turn into disagreement over whose approach should lead"
+  };
+
+  var ASTRO_TIER_PHRASE = {
+    5: "your Sun signs share the same element, giving you an instinctive, easy rapport",
+    4: "your Sun signs' elements naturally complement each other",
+    3: "your Sun signs are neither strongly aligned nor strongly opposed",
+    2: "your Sun signs sit in opposing elements, which can create friction if you're not careful",
+    1: "your Sun signs pull from very different elemental instincts"
+  };
+
+  var ZODIAC_TIER_PHRASE = {
+    5: "your Chinese zodiac animals belong to the same trine of natural allies",
+    4: "your Chinese zodiac animals share a traditional bond of harmony",
+    3: "your Chinese zodiac animals have a fairly neutral relationship",
+    2: "your Chinese zodiac animals have some built-in friction",
+    1: "your Chinese zodiac animals sit in a classic clash pairing"
+  };
+
+  function sunModalityNote(signA, signB) {
+    var modA = SIGN_MODALITY[signA];
+    var modB = SIGN_MODALITY[signB];
+    if (modA === modB) {
+      if (modA === "Cardinal") return "You're also both natural initiators, which can mean two people reaching for the wheel at the same time.";
+      if (modA === "Fixed") return "You're also both built for staying the course, which brings stability but can mean neither of you wants to bend first.";
+      return "You're also both naturally adaptable, which keeps things easy but can mean plans drift without one of you anchoring them.";
+    }
+    if ((modA === "Cardinal" && modB === "Fixed") || (modA === "Fixed" && modB === "Cardinal")) {
+      return "One of you naturally initiates while the other holds steady — a pairing that tends to balance well.";
+    }
+    if ((modA === "Cardinal" && modB === "Mutable") || (modA === "Mutable" && modB === "Cardinal")) {
+      return "One of you naturally initiates while the other adapts, which tends to keep momentum going.";
+    }
+    return "One of you naturally holds steady while the other adapts, balancing structure with flexibility.";
+  }
+
+  function zodiacElementNote(elA, elB) {
+    if (elA === elB) return "You also share the same " + elA + " element, which tends to amplify whatever your animal pairing already suggests.";
+    return "Your elements differ — " + elA + " and " + elB + " — adding a layer of temperament contrast on top of your animal pairing.";
+  }
+
+  function buildCompatibilityNarrative(nameA, nameB, dataA, dataB, lifePathTier, expressionTier, astroTier, zodiacTier, overallScore, overallTier) {
+    var numerologySubTier = Math.round((lifePathTier + expressionTier) / 2);
+    var subs = [
+      { system: "numerology", tier: numerologySubTier },
+      { system: "astrology", tier: astroTier },
+      { system: "zodiac", tier: zodiacTier }
+    ];
+
+    var strongest = subs[0];
+    var weakest = subs[0];
+    subs.forEach(function (s) {
+      if (s.tier > strongest.tier) strongest = s;
+      if (s.tier < weakest.tier) weakest = s;
+    });
+
+    var opening = nameA + " and " + nameB + " land at " + overallScore + " — " + overallTier + ".";
+
+    var numerologyPara = "Numerology: Life Path " + dataA.lifePath + " and " + dataB.lifePath + " — " +
+      LIFEPATH_PAIR_PHRASE[lifePathTier] + ". Expression " + dataA.expression + " and " + dataB.expression + " — " +
+      EXPRESSION_PAIR_PHRASE[expressionTier] + ".";
+
+    var astroPara = "Astrology: " + dataA.sunSign + " and " + dataB.sunSign + " as Sun signs — " +
+      ASTRO_TIER_PHRASE[astroTier] + ". " + sunModalityNote(dataA.sunSign, dataB.sunSign);
+
+    var zodiacPara = "Chinese zodiac: " + dataA.animal + " and " + dataB.animal + " — " +
+      ZODIAC_TIER_PHRASE[zodiacTier] + ". " + zodiacElementNote(dataA.element, dataB.element);
+
+    var closing;
+    if (weakest.tier <= 2 && weakest.system !== strongest.system) {
+      closing = "The one system worth watching a little closer is " + weakest.system + " — everything else here lines up more easily than that one piece.";
+    } else if (strongest.tier >= 4) {
+      closing = "The strongest thread connecting you two is " + strongest.system + ".";
+    } else {
+      closing = "No single system dominates here — this is a genuinely blended read, worth taking as a whole rather than any one piece.";
+    }
+
+    return opening + " " + numerologyPara + " " + astroPara + " " + zodiacPara + " " + closing;
+  }
+
+  // Short, single-line version of the same strongest/weakest logic above,
+  // sized for the shareable image card rather than the full narrative.
+  var SHARE_SYSTEM_LABEL = { numerology: "numbers", astrology: "stars", zodiac: "zodiac" };
+
+  function buildShareTakeaway(lifePathTier, expressionTier, astroTier, zodiacTier) {
+    var numerologySubTier = Math.round((lifePathTier + expressionTier) / 2);
+    var subs = [
+      { system: "numerology", tier: numerologySubTier },
+      { system: "astrology", tier: astroTier },
+      { system: "zodiac", tier: zodiacTier }
+    ];
+    var strongest = subs[0], weakest = subs[0];
+    subs.forEach(function (s) {
+      if (s.tier > strongest.tier) strongest = s;
+      if (s.tier < weakest.tier) weakest = s;
+    });
+
+    if (weakest.tier <= 2 && weakest.system !== strongest.system) {
+      return "Your " + SHARE_SYSTEM_LABEL[strongest.system] + " line up beautifully — just watch your " + SHARE_SYSTEM_LABEL[weakest.system] + ".";
+    }
+    if (strongest.tier >= 4) {
+      return "Your " + SHARE_SYSTEM_LABEL[strongest.system] + " are the strongest thread between you two.";
+    }
+    return "A genuinely blended match — no single system tells the whole story.";
+  }
+
+  // ---------- Compatibility share card (canvas-based, client-side only) ----------
+
+  function initialsOf(name) {
+    var parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return "?";
+    if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+  }
+
+  function drawTrackedText(ctx, text, centerX, y, spacing) {
+    var totalWidth = 0;
+    for (var i = 0; i < text.length; i++) {
+      totalWidth += ctx.measureText(text[i]).width + (i < text.length - 1 ? spacing : 0);
+    }
+    var x = centerX - totalWidth / 2;
+    var prevAlign = ctx.textAlign;
+    ctx.textAlign = "left";
+    for (var j = 0; j < text.length; j++) {
+      ctx.fillText(text[j], x, y);
+      x += ctx.measureText(text[j]).width + spacing;
+    }
+    ctx.textAlign = prevAlign;
+  }
+
+  function wrapCenteredText(ctx, text, centerX, startY, maxWidth, lineHeight, maxLines) {
+    var words = text.split(" ");
+    var lines = [];
+    var current = "";
+    for (var i = 0; i < words.length; i++) {
+      var test = current ? current + " " + words[i] : words[i];
+      if (current && ctx.measureText(test).width > maxWidth) {
+        lines.push(current);
+        current = words[i];
+      } else {
+        current = test;
+      }
+    }
+    if (current) lines.push(current);
+    if (maxLines && lines.length > maxLines) {
+      lines = lines.slice(0, maxLines);
+      lines[maxLines - 1] = lines[maxLines - 1].replace(/\s+\S*$/, "") + "…";
+    }
+    var prevAlign = ctx.textAlign;
+    ctx.textAlign = "center";
+    lines.forEach(function (line, idx) {
+      ctx.fillText(line, centerX, startY + idx * lineHeight);
+    });
+    ctx.textAlign = prevAlign;
+    return lines.length;
+  }
+
+  function drawNamesRow(ctx, nameA, nameB, centerX, y, maxWidth) {
+    var sep = "   ✦   ";
+    var size = 76;
+    function widthAt(s) {
+      ctx.font = "700 " + s + "px 'Segoe UI', Arial, sans-serif";
+      return ctx.measureText(nameA).width + ctx.measureText(sep).width + ctx.measureText(nameB).width;
+    }
+    while (size > 34 && widthAt(size) > maxWidth) size -= 2;
+    ctx.font = "700 " + size + "px 'Segoe UI', Arial, sans-serif";
+    var totalWidth = widthAt(size);
+    var x = centerX - totalWidth / 2;
+    var prevAlign = ctx.textAlign;
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#FBFAF9";
+    ctx.fillText(nameA, x, y);
+    x += ctx.measureText(nameA).width;
+    ctx.fillStyle = "#D4AF37";
+    ctx.fillText(sep, x, y);
+    x += ctx.measureText(sep).width;
+    ctx.fillStyle = "#FBFAF9";
+    ctx.fillText(nameB, x, y);
+    ctx.textAlign = prevAlign;
+  }
+
+  function drawConstellationField(ctx, w, h) {
+    var points = [];
+    var count = 46;
+    for (var i = 0; i < count; i++) {
+      points.push({ x: Math.random() * w, y: Math.random() * h, r: 1 + Math.random() * 1.8 });
+    }
+    ctx.save();
+    ctx.strokeStyle = "rgba(184,169,224,0.16)";
+    ctx.lineWidth = 1;
+    for (var a = 0; a < points.length; a++) {
+      for (var b = a + 1; b < points.length; b++) {
+        var dx = points[a].x - points[b].x, dy = points[a].y - points[b].y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 130) {
+          ctx.beginPath();
+          ctx.moveTo(points[a].x, points[a].y);
+          ctx.lineTo(points[b].x, points[b].y);
+          ctx.stroke();
+        }
+      }
+    }
+    points.forEach(function (p) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = Math.random() > 0.5 ? "rgba(212,175,55,0.55)" : "rgba(184,169,224,0.55)";
+      ctx.fill();
+    });
+    ctx.restore();
+  }
+
+  // Renders the branded compatibility share card onto `canvas` and invokes
+  // onDone() once drawing (including the async logo load) is complete.
+  function renderCompatShareCard(canvas, shareData, useInitials, onDone) {
+    var ctx = canvas.getContext("2d");
+    var w = canvas.width, h = canvas.height;
+
+    var displayA = useInitials ? initialsOf(shareData.fullNameA) : shareData.nameA;
+    var displayB = useInitials ? initialsOf(shareData.fullNameB) : shareData.nameB;
+
+    function paint() {
+      // Background.
+      var grad = ctx.createLinearGradient(0, 0, w, h);
+      grad.addColorStop(0, "#232357");
+      grad.addColorStop(1, "#14142c");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+
+      drawConstellationField(ctx, w, h);
+
+      var centerX = w / 2;
+
+      // Wordmark row.
+      if (shareData.logoImg) {
+        var logoSize = 84;
+        ctx.drawImage(shareData.logoImg, centerX - logoSize / 2, 64, logoSize, logoSize);
+      }
+      ctx.textAlign = "center";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillStyle = "#D4AF37";
+      ctx.font = "700 40px 'Segoe UI', Arial, sans-serif";
+      drawTrackedText(ctx, "ASTRANUM", centerX, 196, 6);
+
+      ctx.fillStyle = "#B8A9E0";
+      ctx.font = "600 22px 'Segoe UI', Arial, sans-serif";
+      drawTrackedText(ctx, "COMPATIBILITY READING", centerX, 234, 4);
+
+      ctx.strokeStyle = "rgba(212,175,55,0.35)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(centerX - 90, 264);
+      ctx.lineTo(centerX + 90, 264);
+      ctx.stroke();
+
+      // Names.
+      drawNamesRow(ctx, displayA, displayB, centerX, 400, w - 140);
+
+      // Score circle.
+      var circleY = 570, radius = 130;
+      ctx.beginPath();
+      ctx.arc(centerX, circleY, radius, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(0,0,0,0.18)";
+      ctx.fill();
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = "#D4AF37";
+      ctx.stroke();
+
+      ctx.fillStyle = "#FBFAF9";
+      ctx.font = "700 96px 'Segoe UI', Arial, sans-serif";
+      ctx.fillText(String(shareData.overallScore), centerX, circleY + 32);
+
+      ctx.fillStyle = "#B8A9E0";
+      ctx.font = "600 24px 'Segoe UI', Arial, sans-serif";
+      ctx.fillText("OUT OF 100", centerX, circleY + 70);
+
+      ctx.fillStyle = "#D4AF37";
+      ctx.font = "700 34px 'Segoe UI', Arial, sans-serif";
+      ctx.fillText(shareData.overallTier.toUpperCase(), centerX, circleY + radius + 60);
+
+      // Takeaway.
+      ctx.fillStyle = "#EDEAF6";
+      ctx.font = "500 32px 'Segoe UI', Arial, sans-serif";
+      wrapCenteredText(ctx, shareData.takeaway, centerX, circleY + radius + 130, w - 200, 42, 2);
+
+      // Footer.
+      ctx.strokeStyle = "rgba(255,255,255,0.15)";
+      ctx.beginPath();
+      ctx.moveTo(centerX - 140, h - 110);
+      ctx.lineTo(centerX + 140, h - 110);
+      ctx.stroke();
+
+      ctx.fillStyle = "#D4AF37";
+      ctx.font = "600 26px 'Segoe UI', Arial, sans-serif";
+      ctx.fillText("astranum.pazi.dev", centerX, h - 68);
+
+      ctx.fillStyle = "#9d97bd";
+      ctx.font = "400 20px 'Segoe UI', Arial, sans-serif";
+      ctx.fillText("Numerology · Astrology · Chinese Zodiac", centerX, h - 38);
+
+      onDone();
+    }
+
+    if (shareData.logoImg !== undefined) {
+      paint();
+      return;
+    }
+
+    var img = new Image();
+    img.onload = function () {
+      shareData.logoImg = img;
+      paint();
+    };
+    img.onerror = function () {
+      shareData.logoImg = null;
+      paint();
+    };
+    img.src = "../assets/logo.png";
+  }
+
+  // ---------- Chaldean chart meaning (per reading-engine spec section 7) ----------
+
+  var CHALDEAN_PSYCHIC_MEANING = {
+    1: "Day to day, you show up as someone who takes initiative — quick decisions, quick action, uncomfortable sitting on the sidelines.",
+    2: "Day to day, you show up as attentive and cooperative — quick to notice others' moods and adjust your approach to keep things smooth.",
+    3: "Day to day, you show up as expressive and sociable — conversation and creativity come easily, and you're rarely short of something to say.",
+    4: "Day to day, you show up as practical and disciplined — you default to routine and concrete steps rather than abstract plans.",
+    5: "Day to day, you show up as adaptable and energetic — you get restless with repetition and gravitate toward whatever's new.",
+    6: "Day to day, you show up as warm and responsible — people bring you their problems because you're the one who'll actually help.",
+    7: "Day to day, you show up as reflective and private — you process internally before speaking, and small talk drains you faster than depth does.",
+    8: "Day to day, you show up as driven and businesslike — you default to thinking in terms of results, resources, and what's actually getting done.",
+    9: "Day to day, you show up as generous and idealistic — you notice what's unfair before you notice what benefits you personally."
+  };
+
+  var CHALDEAN_DESTINY_MEANING = {
+    1: "Your Chaldean Destiny Number points your overall life direction toward independence and leadership — a path built around originating things rather than joining what already exists.",
+    2: "Your Chaldean Destiny Number points your overall life direction toward partnership and diplomacy — a path built around bringing people and ideas into balance.",
+    3: "Your Chaldean Destiny Number points your overall life direction toward creative expression — a path built around communicating and creating rather than operating quietly behind the scenes.",
+    4: "Your Chaldean Destiny Number points your overall life direction toward structure and discipline — a path built on steady, methodical effort rather than shortcuts.",
+    5: "Your Chaldean Destiny Number points your overall life direction toward change and freedom — a path that resists routine and rewards adaptability.",
+    6: "Your Chaldean Destiny Number points your overall life direction toward responsibility and care — a path centered on home, community, and looking after others.",
+    7: "Your Chaldean Destiny Number points your overall life direction toward inner wisdom — a path built on introspection, study, and understanding what's beneath the surface.",
+    8: "Your Chaldean Destiny Number points your overall life direction toward material achievement — a path built around authority, ambition, and tangible results.",
+    9: "Your Chaldean Destiny Number points your overall life direction toward humanitarian purpose — a path built around giving, completion, and letting go of what no longer serves you.",
+    11: "Your Chaldean Destiny Number is the master number 11, held at its higher vibration rather than reduced — your overall life direction carries heightened intuition and a path meant to inspire others, not just yourself. Chaldean tradition preserves 11 and 22 as master numbers; 33 is always reduced.",
+    22: "Your Chaldean Destiny Number is the master number 22, held at its higher vibration rather than reduced — your overall life direction pairs big vision with the practical capacity to build it into something real. Chaldean tradition preserves 11 and 22 as master numbers; 33 is always reduced."
+  };
+
+  var CHALDEAN_NAME_MEANING = {
+    1: "The name you go by right now carries a leadership vibration — it tends to put you at the front of situations, whether or not that's where you started.",
+    2: "The name you go by right now carries a cooperative vibration — it tends to draw you into a connecting, mediating role in groups.",
+    3: "The name you go by right now carries an expressive vibration — it tends to put your voice and creativity in front of people.",
+    4: "The name you go by right now carries a structured vibration — it tends to attract responsibility for organizing and stabilizing things around you.",
+    5: "The name you go by right now carries a dynamic vibration — it tends to invite change, variety, and unplanned opportunity into your day-to-day.",
+    6: "The name you go by right now carries a nurturing vibration — it tends to put you in a caretaking or advisory role for the people around you.",
+    7: "The name you go by right now carries an introspective vibration — it tends to draw people to you for insight rather than small talk.",
+    8: "The name you go by right now carries an authoritative vibration — it tends to put you in charge of resources, decisions, or outcomes.",
+    9: "The name you go by right now carries a humanitarian vibration — it tends to associate you with generosity and bigger causes in others' eyes."
+  };
+
+  function buildChaldeanInterplay(psychic, destiny) {
+    if (psychic === destiny) {
+      return "Your Psychic Number and Destiny Number match exactly, which in Chaldean tradition means your day-to-day self and your overall life direction are fully aligned — who you are moment to moment is already pointed the same way as your larger path, with little internal tension between the two.";
+    }
+    var tier = numerologyPairTier(psychic, destiny);
+    if (tier >= 4) {
+      return "Your Psychic Number and Destiny Number reinforce each other well — the way you show up day to day naturally supports the larger direction your life is heading, rather than working against it.";
+    }
+    if (tier === 3) {
+      return "Your Psychic Number and Destiny Number don't strongly reinforce or contradict each other — your day-to-day self and your overall life direction operate somewhat independently, which usually just means each one needs to be nurtured on its own terms.";
+    }
+    return "Your Psychic Number and Destiny Number sit in some tension — the way you naturally show up day to day doesn't automatically match your larger life direction, which in Chaldean tradition is read as a growth edge: bridging the gap between how you act now and where you're actually headed.";
+  }
+
+  function renderInterpretations(data) {
+    var lp = LIFE_PATH_MEANING[data.lifePath];
+    document.getElementById("interp-lifepath-title").textContent = lp.title;
+    document.getElementById("interp-lifepath-body").textContent = lp.body;
+
+    var exp = EXPRESSION_MEANING[data.expression];
+    document.getElementById("interp-expression-title").textContent = exp.title;
+    document.getElementById("interp-expression-body").textContent = exp.body;
+
+    document.getElementById("interp-sunsign-title").textContent = "Your Sun in " + data.sunSign;
+    document.getElementById("interp-sunsign-body").textContent = SUN_SIGN_MEANING[data.sunSign];
+
+    document.getElementById("interp-animal-title").textContent = "The " + data.animal;
+    document.getElementById("interp-animal-body").textContent = ANIMAL_MEANING[data.animal];
+
+    document.getElementById("interp-element-title").textContent = data.element + " Element";
+    document.getElementById("interp-element-body").textContent = ELEMENT_MEANING[data.element];
+
+    var py = PERSONAL_YEAR_MEANING[data.personalYear];
+    document.getElementById("interp-personalyear-title").textContent =
+      "Personal Year " + data.personalYear + ": " + py.label;
+    document.getElementById("interp-personalyear-body").textContent = py.body;
+
+    document.getElementById("interp-personality-title").textContent = data.animal + " Personality Traits";
+    document.getElementById("interp-personality-body").textContent = ANIMAL_PERSONALITY[data.animal];
+
+    document.getElementById("interp-yearoutlook-title").textContent =
+      data.currentYear + " Outlook For The " + data.animal;
+    document.getElementById("interp-yearoutlook-body").textContent = buildYearOutlook(
+      data.animal, data.element, data.currentYear, data.yearAnimal, data.yearElement
+    );
+
+    document.getElementById("interp-chaldean-psychic-title").textContent =
+      "Chaldean Psychic Number " + data.chaldeanPsychic;
+    document.getElementById("interp-chaldean-psychic-body").textContent =
+      CHALDEAN_PSYCHIC_MEANING[data.chaldeanPsychic];
+
+    document.getElementById("interp-chaldean-destiny-title").textContent =
+      "Chaldean Destiny Number " + data.chaldeanDestiny;
+    document.getElementById("interp-chaldean-destiny-body").textContent =
+      CHALDEAN_DESTINY_MEANING[data.chaldeanDestiny];
+
+    document.getElementById("interp-chaldean-name-title").textContent =
+      "Chaldean Name Number " + data.chaldeanNameCompound + " → " + data.chaldeanNameReduced;
+    document.getElementById("interp-chaldean-name-body").textContent =
+      CHALDEAN_NAME_MEANING[data.chaldeanNameReduced] + " Your name's letters sum to a compound number of " +
+      data.chaldeanNameCompound + " before reducing to " + data.chaldeanNameReduced +
+      " — Chaldean tradition treats a compound number like this one as carrying its own additional shade of meaning, distinct from the single digit alone.";
+
+    document.getElementById("interp-chaldean-interplay-body").textContent =
+      buildChaldeanInterplay(data.chaldeanPsychic, data.chaldeanDestiny);
+  }
+
+  function renderTransits(data) {
+    document.getElementById("transit-date").textContent =
+      "Planetary snapshot for " + TRANSIT_SNAPSHOT.displayDate + " — refreshed periodically, not a live ephemeris calculation.";
+
+    var grid = document.getElementById("transit-grid");
+    grid.innerHTML = "";
+    TRANSIT_SNAPSHOT.planets.forEach(function (p) {
+      var row = document.createElement("div");
+      row.className = "transit-row";
+
+      var head = document.createElement("div");
+      head.className = "transit-row-head";
+      head.textContent = p.name + " in " + p.sign;
+
+      var body = document.createElement("p");
+      body.className = "transit-row-body";
+      body.textContent = TRANSIT_GENERAL[p.name];
+
+      row.appendChild(head);
+      row.appendChild(body);
+      grid.appendChild(row);
+    });
+
+    document.getElementById("transit-personal-title").textContent = "What This Means For Your " + data.sunSign + " Sun";
+    document.getElementById("transit-personal-body").textContent = TRANSIT_PERSONAL_BY_SUN_SIGN[data.sunSign];
+  }
+
+  // Pazi Checkout link for the one-time $1.99 "10-Year Numerology Forecast"
+  // unlock (current year + 4 years ahead). Exact link returned by the Pazi
+  // commerce catalog — never modify or reconstruct this URL.
+  var FORECAST_CHECKOUT_URL = "https://api.pazi.ai/commerce/checkout?productId=6aaef010125d320fc8211190&quantity=1";
+
+  // ---------- 10-Year Numerology Forecast (per reading-engine spec section 8) ----------
+  // Range is currentYear-5 through currentYear+4 inclusive (10 years: 5 past,
+  // the current year, 4 future), each year's Personal Year Number recomputed
+  // with the exact existing formula. Business decision (not part of the core
+  // spec): the 5 past years are free and shown in full; the current year and
+  // the 4 future years are gated behind a one-time $1.99 Pazi Checkout unlock.
+
+  var FORECAST_YEAR_CONTENT = {
+    1: {
+      theme: "a year for new beginnings and bold starts",
+      opportunities: [
+        "starting a new job, project, or relationship",
+        "taking the lead on something you'd hesitated to begin",
+        "setting the tone for the next nine-year cycle"
+      ],
+      cautions: ["impatience with people or plans that move slower than you do"]
+    },
+    2: {
+      theme: "a year for partnership, patience, and quiet groundwork",
+      opportunities: [
+        "deepening a key partnership or collaboration",
+        "letting results build slowly instead of forcing them",
+        "resolving tension through diplomacy rather than force"
+      ],
+      cautions: ["over-accommodating others at your own expense"]
+    },
+    3: {
+      theme: "a year for creating and being seen",
+      opportunities: [
+        "putting creative work in front of an audience",
+        "growing your visibility through communication",
+        "saying yes to more social opportunities than usual"
+      ],
+      cautions: ["scattering your energy across too many ideas at once"]
+    },
+    4: {
+      theme: "a year for building foundations that support you later",
+      opportunities: [
+        "organizing systems that support future growth",
+        "committing to steady, unglamorous effort",
+        "strengthening your financial or logistical foundation"
+      ],
+      cautions: [
+        "burnout from over-committing to the grind",
+        "letting structure become an excuse to avoid real risk"
+      ]
+    },
+    5: {
+      theme: "a year for change, freedom, and unexpected opportunity",
+      opportunities: [
+        "traveling or trying something entirely new",
+        "adapting to a sudden change rather than resisting it",
+        "diversifying instead of narrowing your options"
+      ],
+      cautions: ["change for its own sake rather than for a real reason"]
+    },
+    6: {
+      theme: "a year for responsibility, home, and caring for others",
+      opportunities: [
+        "investing in home and family commitments",
+        "stepping into a caretaking or mentoring role",
+        "strengthening ties within your community"
+      ],
+      cautions: ["over-giving until there's nothing left for yourself"]
+    },
+    7: {
+      theme: "a year for reflection, study, and inner clarity",
+      opportunities: [
+        "studying or researching something that genuinely matters to you",
+        "taking real time for solitude and reflection",
+        "trusting your own insight over outside validation"
+      ],
+      cautions: ["isolating yourself past the point that's actually useful"]
+    },
+    8: {
+      theme: "a year for achievement, authority, and material results",
+      opportunities: [
+        "pursuing a promotion, raise, or major financial goal",
+        "taking on more authority or responsibility",
+        "converting past effort into visible results"
+      ],
+      cautions: [
+        "overworking in pursuit of results",
+        "letting ambition crowd out relationships"
+      ]
+    },
+    9: {
+      theme: "a year for completion, release, and giving back",
+      opportunities: [
+        "finishing long-running projects",
+        "letting go of what no longer serves you",
+        "giving back to a cause bigger than yourself"
+      ],
+      cautions: ["holding onto something this year is asking you to release"]
+    }
+  };
+
+  function joinList(items) {
+    if (items.length === 1) return items[0];
+    if (items.length === 2) return items[0] + " and " + items[1];
+    return items.slice(0, items.length - 1).join(", ") + ", and " + items[items.length - 1];
+  }
+
+  // Wraps the same neutral theme/opportunities/cautions content in past,
+  // present, or future tense per spec 8.3, so the arc reads as one continuous
+  // story rather than 10 identical templates. Past years get retrospective,
+  // non-predictive phrasing; future years get forward-looking, non-certain
+  // phrasing, consistent with Astranum's guidance-not-fate voice.
+  function buildForecastYearText(year, personalYear, temporalFraming) {
+    var content = FORECAST_YEAR_CONTENT[personalYear];
+    var themeSentence, oppSentence, cautionSentence;
+
+    if (temporalFraming === "past") {
+      themeSentence = year + " was likely " + content.theme + ".";
+      oppSentence = "Looking back, this was probably a stretch that favored " + joinList(content.opportunities) + ".";
+      cautionSentence = "A gentle thing to reflect on: " + joinList(content.cautions) + ".";
+    } else if (temporalFraming === "present") {
+      themeSentence = "This year is " + content.theme + ".";
+      oppSentence = "Right now, this year favors " + joinList(content.opportunities) + ".";
+      cautionSentence = "A gentle watch-out for right now: " + joinList(content.cautions) + ".";
+    } else {
+      themeSentence = year + " will likely be " + content.theme + ".";
+      oppSentence = "Looking ahead, this is likely to favor " + joinList(content.opportunities) + ".";
+      cautionSentence = "A gentle watch-out to keep in mind: " + joinList(content.cautions) + ".";
+    }
+
+    return themeSentence + " " + oppSentence + " " + cautionSentence;
+  }
+
+  // Builds the full 10-year range (5 past, current, 4 future) per spec 8.1.
+  // isFree marks the past 5 years; the current year and 4 future years are
+  // the paid, checkout-gated portion.
+  function buildForecastRange(birthDate, currentYear) {
+    var years = [];
+    for (var offset = -5; offset <= 4; offset++) {
+      var year = currentYear + offset;
+      var personalYear = personalYearNumber(birthDate, year);
+      var temporalFraming = offset < 0 ? "past" : (offset === 0 ? "present" : "future");
+      years.push({
+        year: year,
+        personalYear: personalYear,
+        temporalFraming: temporalFraming,
+        isFree: temporalFraming === "past"
+      });
+    }
+    return years;
+  }
+
+  function renderForecast(birthDate, currentYear) {
+    var years = buildForecastRange(birthDate, currentYear);
+
+    var pastList = document.getElementById("forecast-list-past");
+    pastList.innerHTML = "";
+    years.filter(function (y) { return y.isFree; }).forEach(function (y) {
+      var card = document.createElement("div");
+      card.className = "forecast-year";
+
+      var head = document.createElement("div");
+      head.className = "forecast-year-head";
+      var yearSpan = document.createElement("span");
+      yearSpan.className = "fy-year";
+      yearSpan.textContent = y.year;
+      var tagSpan = document.createElement("span");
+      tagSpan.className = "fy-tag";
+      tagSpan.textContent = "Personal Year " + y.personalYear;
+      head.appendChild(yearSpan);
+      head.appendChild(tagSpan);
+
+      var body = document.createElement("p");
+      body.textContent = buildForecastYearText(y.year, y.personalYear, y.temporalFraming);
+
+      card.appendChild(head);
+      card.appendChild(body);
+      pastList.appendChild(card);
+    });
+
+    var badgeWrap = document.getElementById("forecast-locked-years");
+    badgeWrap.innerHTML = "";
+    years.filter(function (y) { return !y.isFree; }).forEach(function (y) {
+      var badge = document.createElement("span");
+      badge.className = "fy-locked-badge";
+      badge.textContent = y.year;
+      badgeWrap.appendChild(badge);
+    });
+
+    var checkoutLink = document.getElementById("forecast-checkout-link");
+    checkoutLink.href = FORECAST_CHECKOUT_URL;
+  }
+
+  // ---------- Wiring ----------
+
+  var form = document.getElementById("reading-form");
+  var birthDateInput = document.getElementById("birth-date");
+  var zodiacYearInput = document.getElementById("zodiac-year");
+  var zodiacNote = document.getElementById("zodiac-note");
+  var formError = document.getElementById("form-error");
+  var formSection = document.getElementById("form-section");
+  var resultSection = document.getElementById("result");
+  var startOverBtn = document.getElementById("start-over");
+
+  var compatBirthdateInput = document.getElementById("compat-birthdate");
+  var compatZodiacYearInput = document.getElementById("compat-zodiac-year");
+  var compatSubmitBtn = document.getElementById("compat-submit");
+  var compatError = document.getElementById("compat-error");
+  var compatResultSection = document.getElementById("compat-result");
+  var compatShareInitials = document.getElementById("compat-share-initials");
+  var compatShareDownloadBtn = document.getElementById("compat-share-download");
+  var compatShareCanvas = document.getElementById("compat-share-canvas");
+  var compatSharePreview = document.getElementById("compat-share-preview");
+  var lastReadingData = null;
+  var lastCompatShare = null;
+
+  var today = new Date();
+  birthDateInput.max = today.toISOString().slice(0, 10);
+
+  birthDateInput.addEventListener("change", function () {
+    if (!birthDateInput.value) return;
+    var year = Number(birthDateInput.value.split("-")[0]);
+    zodiacYearInput.value = year;
+    if (isNearChineseNewYearWindow(birthDateInput.value)) {
+      zodiacNote.textContent = "Heads up: you were born close to the Chinese New Year boundary (late Jan–mid Feb). If your animal year usually reads as " +
+        chineseAnimal(year - 1) + " instead of " + chineseAnimal(year) + ", change the year above to " + (year - 1) + ".";
+      zodiacNote.classList.add("visible");
+    } else {
+      zodiacNote.classList.remove("visible");
+    }
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    var fullName = document.getElementById("full-name").value.trim();
+    var birthDate = birthDateInput.value;
+    var birthTime = document.getElementById("birth-time").value;
+    var birthCity = document.getElementById("birth-city").value.trim();
+    var zodiacYear = Number(zodiacYearInput.value);
+
+    if (!fullName || !birthDate || !birthCity || !zodiacYear) {
+      formError.classList.add("visible");
+      return;
+    }
+    formError.classList.remove("visible");
+
+    var currentYear = today.getFullYear();
+    var chaldeanName = chaldeanNameNumber(fullName);
+
+    var data = {
+      fullName: fullName,
+      lifePath: lifePathNumber(birthDate),
+      expression: expressionNumber(fullName),
+      personalYear: personalYearNumber(birthDate, currentYear),
+      sunSign: sunSign(birthDate),
+      animal: chineseAnimal(zodiacYear),
+      element: chineseElement(zodiacYear),
+      currentYear: currentYear,
+      yearAnimal: chineseAnimal(currentYear),
+      yearElement: chineseElement(currentYear),
+      chaldeanPsychic: chaldeanPsychicNumber(birthDate),
+      chaldeanDestiny: chaldeanDestinyNumber(birthDate),
+      chaldeanNameCompound: chaldeanName.compound,
+      chaldeanNameReduced: chaldeanName.reduced
+    };
+
+    document.getElementById("result-heading").textContent = fullName.split(/\s+/)[0] + "'s Personal Reading";
+    document.getElementById("chip-lifepath").textContent = data.lifePath;
+    document.getElementById("chip-expression").textContent = data.expression;
+    document.getElementById("chip-personalyear").textContent = data.personalYear;
+    document.getElementById("chip-chaldean-psychic").textContent = data.chaldeanPsychic;
+    document.getElementById("chip-chaldean-destiny").textContent = data.chaldeanDestiny;
+    document.getElementById("chip-sunsign").textContent = data.sunSign;
+    document.getElementById("chip-zodiac").textContent = data.element + " " + data.animal;
+    document.getElementById("reading-text").textContent = buildReading(data);
+
+    renderInterpretations(data);
+    renderTransits(data);
+    renderForecast(birthDate, currentYear);
+
+    var metaBits = [];
+    metaBits.push("Born " + birthDate + (birthTime ? " at " + birthTime : "") + " in " + birthCity + ".");
+    document.getElementById("reading-meta").textContent = metaBits.join(" ");
+
+    lastReadingData = data;
+    compatResultSection.classList.remove("visible");
+    compatError.classList.remove("visible");
+
+    formSection.classList.add("hidden");
+    resultSection.classList.add("visible");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  compatBirthdateInput.addEventListener("change", function () {
+    if (!compatBirthdateInput.value) return;
+    compatZodiacYearInput.value = Number(compatBirthdateInput.value.split("-")[0]);
+  });
+
+  compatSubmitBtn.addEventListener("click", function () {
+    var compatName = document.getElementById("compat-name").value.trim();
+    var compatBirthdate = compatBirthdateInput.value;
+    var compatZodiacYear = Number(compatZodiacYearInput.value);
+
+    if (!lastReadingData || !compatName || !compatBirthdate || !compatZodiacYear) {
+      compatError.classList.add("visible");
+      return;
+    }
+    compatError.classList.remove("visible");
+
+    var dataB = {
+      fullName: compatName,
+      lifePath: lifePathNumber(compatBirthdate),
+      expression: expressionNumber(compatName),
+      sunSign: sunSign(compatBirthdate),
+      animal: chineseAnimal(compatZodiacYear),
+      element: chineseElement(compatZodiacYear)
+    };
+
+    var lifePathTier = numerologyPairTier(lastReadingData.lifePath, dataB.lifePath);
+    var expressionTier = numerologyPairTier(lastReadingData.expression, dataB.expression);
+    var numerologySubScore = Math.round((lifePathTier + expressionTier) / 2);
+
+    var astrologySubScore = sunSignPairTier(lastReadingData.sunSign, dataB.sunSign);
+    var zodiacSubScore = zodiacPairTier(lastReadingData.animal, dataB.animal);
+
+    var overallScore = Math.round(((numerologySubScore + astrologySubScore + zodiacSubScore) / 3) / 5 * 100);
+    var overallTier = overallTierFromScore(overallScore);
+
+    var nameA = lastReadingData.fullName.trim().split(/\s+/)[0] || "You";
+    var nameB = compatName.split(/\s+/)[0] || "them";
+
+    document.getElementById("compat-score").textContent = overallScore;
+    document.getElementById("compat-tier").textContent = overallTier;
+    document.getElementById("compat-narrative").textContent = buildCompatibilityNarrative(
+      nameA, nameB, lastReadingData, dataB, lifePathTier, expressionTier, astrologySubScore, zodiacSubScore, overallScore, overallTier
+    );
+
+    lastCompatShare = {
+      nameA: nameA,
+      nameB: nameB,
+      fullNameA: lastReadingData.fullName,
+      fullNameB: compatName,
+      overallScore: overallScore,
+      overallTier: overallTier,
+      takeaway: buildShareTakeaway(lifePathTier, expressionTier, astrologySubScore, zodiacSubScore)
+    };
+    compatSharePreview.style.display = "none";
+    compatSharePreview.removeAttribute("src");
+    compatShareInitials.checked = false;
+
+    compatResultSection.classList.add("visible");
+    compatResultSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  function renderCompatSharePreview() {
+    if (!lastCompatShare) return;
+    lastCompatShare.logoImg = undefined;
+    renderCompatShareCard(compatShareCanvas, lastCompatShare, compatShareInitials.checked, function () {
+      compatSharePreview.src = compatShareCanvas.toDataURL("image/png");
+      compatSharePreview.style.display = "block";
+    });
+  }
+
+  compatShareDownloadBtn.addEventListener("click", function () {
+    if (!lastCompatShare) return;
+    lastCompatShare.logoImg = undefined;
+    renderCompatShareCard(compatShareCanvas, lastCompatShare, compatShareInitials.checked, function () {
+      compatSharePreview.src = compatShareCanvas.toDataURL("image/png");
+      compatSharePreview.style.display = "block";
+
+      compatShareCanvas.toBlob(function (blob) {
+        if (!blob) return;
+        var url = URL.createObjectURL(blob);
+        var fileNameBits = ["astranum-compatibility"];
+        [lastCompatShare.nameA, lastCompatShare.nameB].forEach(function (n) {
+          fileNameBits.push(String(n).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""));
+        });
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = fileNameBits.filter(Boolean).join("-") + ".png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+      }, "image/png");
+    });
+  });
+
+  compatShareInitials.addEventListener("change", function () {
+    if (lastCompatShare && compatSharePreview.style.display !== "none") {
+      renderCompatSharePreview();
+    }
+  });
+
+  startOverBtn.addEventListener("click", function () {
+    resultSection.classList.remove("visible");
+    formSection.classList.remove("hidden");
+    compatResultSection.classList.remove("visible");
+    lastReadingData = null;
+    lastCompatShare = null;
+    compatSharePreview.style.display = "none";
+    compatSharePreview.removeAttribute("src");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+})();
+</script>
+</body>
+</html>
